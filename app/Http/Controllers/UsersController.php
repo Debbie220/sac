@@ -31,7 +31,9 @@ class UsersController extends Controller
         if($id == $user->id){
             $presentations = $user->presentations()->
             orderBy('updated_at','desc')->get();
-            return view('user.show', compact('presentations'));
+            $courses = \App\Course::orderBy('subject_code', 'asc')->
+                orderBy('number')->get();
+            return view('user.show', compact('presentations', 'courses'));
 
         }
         else {
@@ -40,14 +42,6 @@ class UsersController extends Controller
         }
 
     }
-
-    public function my_courses(){
-        $courses = \App\Course::orderBy('subject_code', 'asc')->
-            orderBy('number')->get();
-        $presentation_types = \App\PresentationType::all();
-        return view('user.professor.my_courses',
-          compact('courses', 'presentation_types'));
-        }
 
     public function add_course(Request $request){
         $user = Auth::user();
@@ -61,7 +55,7 @@ class UsersController extends Controller
             flash()->error('You already have this course');
         }
 
-        return redirect(route('my_courses'));
+        return redirect(route('user.show', $user->id));
     }
 
     public function remove_course($id){
