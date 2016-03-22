@@ -1,8 +1,8 @@
 <?php
 Route::group(['middleware' => 'web'], function () {
     Route::get('/', 'StaticPagesController@home')->name('home');
-    Route::get('{id}/edit_profile', 'UsersController@edit')->name('edit');
-    Route::post('{id}/edit_profile', 'UsersController@save_edit')->name('save_edit');
+    Route::get('edit', 'UsersController@edit')->name('edit');
+    Route::post('update', 'UsersController@update')->name('update');
     Route::auth();
 
 
