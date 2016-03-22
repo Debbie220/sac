@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="col-md-8 col-md-offset-2">
-<form action="{{ route('save_edit', $user->id)}}" method="POST" role='form'>
+<form action="{{ route('update')}}" method="POST" role='form'>
   <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
     <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">

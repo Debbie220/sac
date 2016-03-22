@@ -16,18 +16,19 @@
 <p class="navbar-text navbar-right"></p>
 
 <p class="navbar-text navbar-right">
-  <a href="{{ route('edit', '$user->id') }}">
+  <a href="{{ url('/logout') }}">
     <span class="uofatext">
-      Edit profile
+      <i class="fa fa-sign-out"></i>
+      Log out
     </span>
   </a>
 </p>
 
 <p class="navbar-text navbar-right">
-  <a href="{{ url('/logout') }}">
+  <a href="{{ route('edit') }}">
     <span class="uofatext">
-      <i class="fa fa-sign-out"></i>
-      Log out
+      <i class="fa fa-user fa-fw"></i>
+      Edit profile
     </span>
   </a>
 </p>
