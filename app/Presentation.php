@@ -37,4 +37,14 @@ class Presentation extends Model
     public function status(){
         return $this->belongsTo("App\Status", "status");
     }
+
+    public function students(){
+        return DB::table('presentation_students')->
+            select('student_name')->
+            where('presentation_id', '=', $this->id)->get();
+    }
+
+    public function is_group_presentation(){
+        return count(students()) > 1;
+    }
 }

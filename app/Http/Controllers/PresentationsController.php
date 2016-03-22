@@ -61,7 +61,6 @@ class PresentationsController extends Controller
         $fields = $request->all();
         $students = $fields['student_name'];
         unset($fields['student_name']);
-        print_r($students);
         $user = Auth::user();
 
         $presentation = new Presentation($fields);
@@ -75,18 +74,13 @@ class PresentationsController extends Controller
 
         $presentation->status = "S";
         if($presentation->save()){
-            foreach ($students as $student) {
-                try{
-                    DB::table('presentation_students')->insert(
-                        ['presentation_id' => $presentation->id,
-                        'student_name' => $student]);
-                } catch(\Illuminate\Database\QueryException $e){
-                    flash()->error('This student is already registered for this presentation');
-                }
-            }
+            $this->save_students($students, $presentation->id);
+            flash()->success("Presentation saved. 
+                Don't forget to submit it to SAC coodinator");
+        } else {
+            flash()->error("Presentation couldn't be saved");
         }
 
-        flash()->success("Presentation saved. Don't forget to submit it to SAC coodinator");
         return redirect()->route('user.show', $user);
     }
 
@@ -186,6 +180,19 @@ class PresentationsController extends Controller
     public function pending(){
         $presentations = Presentation::where('status', 'P')->get();
         return view('presentations.pending')->with('presentations', $presentations);
+    }
+
+    private function save_students($students, $id){
+        foreach ($students as $student) {
+            try{
+                DB::table('presentation_students')->insert(
+                    ['presentation_id' => $id,
+                    'student_name' => $student]);
+            } catch(\Illuminate\Database\QueryException $e){
+                flash()->error('This student is already 
+                    registered for this presentation');
+            }
+        }
     }
 
     private function prepare_form($presentation, $action){

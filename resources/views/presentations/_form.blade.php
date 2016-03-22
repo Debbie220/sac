@@ -38,7 +38,28 @@
 </div>
 
 <div id="new-students">
+@foreach($presentation->students() as $student)
+    <div class="form-group new-student">
+        <label class="col-md-3 control-label">Student Name</label>
 
+        <div class="col-md-5">
+            <input type="text" class="form-control" name="student_name[]"
+            value="{{ old('student_name', $student->student_name) }}" >
+
+            @if ($errors->has('student_name'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('student_name') }}</strong>
+                </span>
+            @endif
+        </div>
+
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-center">
+            <a class="btn btn-default" href="#" onclick="addStudent();">
+                <i class="fa fa-plus"></i>
+            </a>
+        </div>
+    </div>
+@endforeach
 </div>
 
 <div class="hidden form-group new-student">
