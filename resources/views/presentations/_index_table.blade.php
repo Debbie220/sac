@@ -31,7 +31,7 @@
             {{ $p['our_nominee'] ? 'Yes' : 'No' }}
         </td>
         <td class="text-center">
-            {{ $presentation_types[$p['type']]['description'] }}
+            {{ $p->type()->get()->first()->description}}
         </td>
 
     </tr>

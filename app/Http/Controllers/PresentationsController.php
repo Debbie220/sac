@@ -30,12 +30,10 @@ class PresentationsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $presentations = Presentation::orderBy('updated_at','desc')->get();
-        $presentation_types = PresentationType::all()->toArray();
-        // Add one value to make the id match the position in the array
-        array_unshift($presentation_types, '');
+        $presentations = Presentation::orderBy('updated_at','desc')->paginate(10);
+
         return view('presentations.index',
-            compact('presentations', 'presentation_types'));
+            compact('presentations'));
     }
 
     /**
