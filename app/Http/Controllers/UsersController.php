@@ -78,11 +78,18 @@ class UsersController extends Controller
       return view('user._edit')->with('user', $user);
     }
 
-    public function save_edit(Request $request){
+    public function update(Request $request){
       $user = Auth::user();
+      if($user->is_professor()){
+        $presentations = Presentation::where('professor_name', $user->name)->get();
+        foreach($presentations as $p){
+          $p->professor_name=$request['name'];
+          $p->save();
+        }
+      }
       $user->update($request->all());
       flash()->success("Your profile has been updated");
-      return redirect()->route('home');
+      return redirect(route('user.show', $user->id));
 
     }
 }
