@@ -3,9 +3,14 @@
 
     <div class="col-md-5">
         <input type="text" class="form-control" name="student_name[]"
-            value="{{ !empty($students) ? $students[0]->student_name : 
-            Auth::user()->is_student() ? Auth::user()->name : '' }}" 
-            {{ Auth::user()->is_student() ? 'readonly' : '' }}>
+            @if(Auth::user()->is_student())
+                value="{{ Auth::user()->name }}"
+                readonly
+            @elseif(!empty($students))
+                value="{{ $students[0]->student_name }}"
+            @endif
+            >
+            
     </div>
 
     <div class="col-md-1 checkbox">
@@ -53,24 +58,5 @@
 </div>
 
 @section('scripts')
-<script type="text/javascript">
-    function addStudent(){
-        var student = $(".new-student").last().clone();
-        student.removeClass("hidden");
-        student.find("input").prop('disabled', false);
-        student.appendTo("#new-students");
-    }
-    $(document).ready(function(){
-
-        $("#group-checkbox").click(function(){
-            var checkbox = $("#group-checkbox");
-            if($("#group-checkbox").is(":checked")){
-                addStudent();
-            }else{
-                $("#new-students").empty();
-            }
-        });
-
-    });
-</script>
+<script src="{{ asset('js/add_student.js') }}"></script>
 @stop
