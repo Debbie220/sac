@@ -44,7 +44,7 @@ class PresentationsController extends Controller
      */
     public function create(){
         $presentation = new Presentation();
-        $presentation->type = -1;
+        $presentation->type = null;
         $presentation->course = null;
         return $this->prepare_form($presentation, 'create');
     }
