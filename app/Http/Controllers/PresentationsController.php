@@ -206,15 +206,11 @@ class PresentationsController extends Controller
     private function prepare_form($presentation, $action){
         $user = Auth::user();
 
-        if(Auth::user()->is_professor())
+        if($user->is_professor())
             $courses = $user->courses;
         else
             $courses = Course::orderBy('subject_code', 'asc')->get();
 
-
-        if($user->is_professor()){
-            $presentation->professor_name = $user->name;
-        }
         $presentation_types = PresentationType::all();
 
         $students = $presentation->students();

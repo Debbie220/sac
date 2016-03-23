@@ -4,8 +4,13 @@
 
     <div class="col-md-6">
         <input type="text" class="form-control" name="professor_name"
-            value="{{ old('professor_name', $presentation['professor_name']) }}"
-            {{ Auth::user()->is_professor() ? 'readonly' : '' }}>
+            @if(Auth::user()->is_professor())
+                value="{{ Auth::user()->name }}"
+                readonly
+            @else
+                value="{{old('professor_name', $presentation['professor_name'])}}"
+            @endif
+            >
 
         @if ($errors->has('professor_name'))
             <span class="help-block">
