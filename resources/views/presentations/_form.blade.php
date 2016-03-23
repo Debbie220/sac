@@ -5,7 +5,7 @@
     <div class="col-md-6">
         <input type="text" class="form-control" name="professor_name"
             value="{{ old('professor_name', $presentation['professor_name']) }}"
-            {{ Auth::user()->is_professor() ? 'disabled' : '' }}>
+            {{ Auth::user()->is_professor() ? 'readonly' : '' }}>
 
         @if ($errors->has('professor_name'))
             <span class="help-block">
@@ -15,74 +15,7 @@
     </div>
 </div>
 
-<div class="form-group{{ $errors->has('student_name') ? ' has-error' : '' }}">
-    <label class="col-md-3 control-label">Student Name</label>
-
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="student_name[]"
-            value="{{ Auth::user()->is_student() ? Auth::user()->name : 
-                old('student_name') }}" >
-
-        @if ($errors->has('student_name'))
-            <span class="help-block">
-                <strong>{{ $errors->first('student_name') }}</strong>
-            </span>
-        @endif
-    </div>
-
-    <div class="col-md-1 checkbox">
-        <label>
-            <input type="checkbox" id="group-checkbox"> Group
-        </label>
-    </div>
-</div>
-
-<div id="new-students">
-@foreach($presentation->students() as $student)
-    <div class="form-group new-student">
-        <label class="col-md-3 control-label">Student Name</label>
-
-        <div class="col-md-5">
-            <input type="text" class="form-control" name="student_name[]"
-            value="{{ old('student_name', $student->student_name) }}" >
-
-            @if ($errors->has('student_name'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('student_name') }}</strong>
-                </span>
-            @endif
-        </div>
-
-        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-center">
-            <a class="btn btn-default" href="#" onclick="addStudent();">
-                <i class="fa fa-plus"></i>
-            </a>
-        </div>
-    </div>
-@endforeach
-</div>
-
-<div class="hidden form-group new-student">
-    <label class="col-md-3 control-label">Student Name</label>
-
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="student_name[]"
-            value="{{ old('student_name', $presentation['student_name']) }}"
-            disabled="true" >
-
-        @if ($errors->has('student_name'))
-            <span class="help-block">
-                <strong>{{ $errors->first('student_name') }}</strong>
-            </span>
-        @endif
-    </div>
-
-    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-center">
-        <a class="btn btn-default" href="#" onclick="addStudent();">
-            <i class="fa fa-plus"></i>
-        </a>
-    </div>
-</div>
+@include("presentations._students")
 
 <div class="form-group{{ $errors->has('course_id') ? ' has-error' : '' }}">
     <label class="col-md-3 control-label">Course</label>
@@ -212,27 +145,3 @@
         </button>
     </div>
 </div>
-
-
-@section('scripts')
-<script type="text/javascript">
-    function addStudent(){
-        var student = $(".new-student").last().clone();
-        student.removeClass("hidden");
-        student.find("input").prop('disabled', false);
-        student.appendTo("#new-students");
-    }
-    $(document).ready(function(){
-
-        $("#group-checkbox").click(function(){
-            var checkbox = $("#group-checkbox");
-            if($("#group-checkbox").is(":checked")){
-                addStudent();
-            }else{
-                $("#new-students").empty();
-            }
-        });
-
-    });
-</script>
-@stop

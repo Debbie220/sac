@@ -44,7 +44,7 @@ class Presentation extends Model
             where('presentation_id', '=', $this->id)->get();
     }
 
-    public function is_group_presentation(){
-        return count(students()) > 1;
+    public function is_group(){
+        return count($this->students()) > 1;
     }
 }

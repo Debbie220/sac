@@ -65,14 +65,8 @@ class PresentationsController extends Controller
 
         $presentation = new Presentation($fields);
         $presentation->owner = $user->id;
-
-        if($user->is_professor()){
-            $presentation->professor_name = $user->name;
-        } else if ($user->is_student()) {
-            array_push($students, $user->name);
-        }
-
         $presentation->status = "S";
+
         if($presentation->save()){
             $this->save_students($students, $presentation->id);
             flash()->success("Presentation saved. 
@@ -108,12 +102,26 @@ class PresentationsController extends Controller
 
         $this->authorize('modify', $presentation);
 
-        $presentation->status = "S";
-        $presentation->update($request->all());
+        $fields = $request->all();
+        $students = $fields['student_name'];
+        unset($fields['student_name']);
+        $user = Auth::user();
 
-        flash()->overlay("Don't forget to resubmit this update"
-             ." to SAC coordinator", "Success!");
+        DB::table('presentation_students')->
+            where('presentation_id', '=', $id)->delete();
 
+        $this->save_students($students, $id);
+
+        if($user->is_admin()){
+            $presentation->status = "A";
+            $presentation->update($fields);
+            flash()->success("Presentation saved!");
+        } else {
+            $presentation->status = "S";
+            $presentation->update($fields);
+            flash()->overlay("Don't forget to resubmit this update"
+                 ." to SAC coordinator", "Success!");
+        }
         return redirect()->route('user.show', Auth::user());
     }
 
@@ -208,8 +216,10 @@ class PresentationsController extends Controller
             $presentation->professor_name = $user->name;
         }
         $presentation_types = PresentationType::all();
+
+        $students = $presentation->students();
         return view('presentations.'.$action,
-            compact('courses', 'presentation_types', 'presentation'));
+            compact('courses', 'presentation_types', 'presentation', 'students'));
     }
 
 }
