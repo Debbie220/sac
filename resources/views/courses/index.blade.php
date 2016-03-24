@@ -1,7 +1,7 @@
 @extends('user.admin.basepage')
 
 @section('header')
-	<h1> Courses </h1>
+Courses
 @stop
 
 @section('admin_content')
