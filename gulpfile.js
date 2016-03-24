@@ -22,6 +22,9 @@ elixir(function(mix) {
   mix.scripts(['jquery.min.js','bootstrap.min.js'])
     .scripts(['dragula.min.js', 'drag.js'], 'public/js/dragula.js');
 
+  mix.scripts('add_student.js', 'public/js/add_student.js')
+
+
 
   mix.version(['public/css/app.css']);
 
