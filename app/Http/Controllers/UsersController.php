@@ -30,7 +30,7 @@ class UsersController extends Controller
         $user = Auth::user();
         if($id == $user->id){
             $presentations = $user->presentations()->
-            orderBy('updated_at','desc')->get()->toArray();
+            orderBy('updated_at','desc')->get();
             return view('user.show', compact('presentations'));
         }
         else {
