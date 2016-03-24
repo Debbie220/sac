@@ -1,3 +1,4 @@
+<div class="col-md-6">
 <table class="table">
     <tr class="row">
         <th class="col-lg-10 col-md-10 col-sm-10 text-center"></th>
@@ -42,3 +43,4 @@
     </tr>
     @endforeach
 </table>
+</div>

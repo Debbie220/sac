@@ -40,6 +40,10 @@ Route::group(['middleware' => 'web'], function () {
         Route::put('changeAvailability/{id}', 'RoomsController@changeAvailability')->
             name('changeAvailability');
         Route::get('courses', 'AdminController@view_courses')->name('courses');
+        Route::get('new_conference', 'AdminController@make_conference')->
+                  name('new_conference');
+        Route::post('new_conference', 'AdminController@create_conference')->
+                  name('create_conference');
     });
 
     Route::group(['prefix' => 'professor/my'], function () {
