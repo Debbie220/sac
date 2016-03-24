@@ -26,7 +26,7 @@
 
                 	<div class="col-md-6">
                 		<select type="text" class="form-control" name="days">
-                			<option value=""> specify the number of days for this conference </option>
+                			<option value=""> Specify the number of days for this conference </option>
                 			<option value="" disabled >---------</option>
                 			@foreach($days as $day)
                 				<option value="{{ $day }}"
@@ -56,11 +56,11 @@
                 </div>
 
                 <div class="form-group{{ $errors->has('end_time') ? ' has-error' : '' }}">
-                	<label class="col-md-3 control-label">End time</label>
+                	<label class="col-md-3 control-label"> Start time of latest presentation</label>
 
                 	<div class="col-md-6">
                 		<select type="text" class="form-control" name="end_time">
-                			<option value=""> lastest time for the conference </option>
+                			<option value=""> Latest time for the conference </option>
                 			<option value="" disabled >---------</option>
                 			@foreach($times as $time)
                 				<option value="{{ $time }}"
