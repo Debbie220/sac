@@ -48,7 +48,7 @@ class AdminController extends Controller
       $conference->description=$request['name'];
       $conference->save();
       $rooms = Room::where('available', true)->get();
-      //make time a table and seed it
+
       $start = $request['start_time'];
       $end = $request['end_time'];
       $times=[];
@@ -70,14 +70,15 @@ class AdminController extends Controller
             $timeslot= new Timeslot;
             $timeslot->day = $day;
             $timeslot->room_code = $room->code;
-            $timeslot->conference_id = $conference->id;
+            $timeslot->conference_id    = $conference->id;
             $timeslot->time = $time;
             $timeslot->save();
 
           }
         }
       }
-      return Timeslot::all();
+      flash()->success("New conference created successfully!!");
+      return redirect()->route('user.show', Auth::user()->id);
     }
 
 }
