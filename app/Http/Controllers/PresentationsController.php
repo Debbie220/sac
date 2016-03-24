@@ -207,9 +207,11 @@ class PresentationsController extends Controller
         $user = Auth::user();
 
         if($user->is_professor())
-            $courses = $user->courses;
+            $courses = $user->courses()->where('offered_this_semester', true)->get();
         else
-            $courses = Course::orderBy('subject_code', 'asc')->get();
+            $courses = Course::where('offered_this_semester', true)->
+                orderBy('subject_code', 'asc')->
+                orderBy('number')->get();
 
         $presentation_types = PresentationType::all();
 

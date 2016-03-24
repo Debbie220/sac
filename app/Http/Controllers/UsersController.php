@@ -31,16 +31,24 @@ class UsersController extends Controller
         if($id == $user->id){
             $presentations = $user->presentations()->
             orderBy('updated_at','desc')->get();
-            $courses = \App\Course::orderBy('subject_code', 'asc')->
-                orderBy('number')->get();
-            return view('user.show', compact('presentations', 'courses'));
-
+            return view('user.show', compact('presentations'));
         }
         else {
             flash()->error('You are not allowed to see others profiles!');
             return redirect(route('user.show', $user->id));
         }
 
+    }
+
+    public function my_courses(){
+        $courses = \App\Course::where('offered_this_semester', true)->
+            orderBy('subject_code', 'asc')->
+            orderBy('number')->get();
+        $my_courses = Auth::user()->courses()->
+            orderBy('subject_code', 'asc')->
+            orderBy('number')->get();
+        return view('user.professor.my_courses',
+            compact('courses', 'my_courses'));
     }
 
     public function add_course(Request $request){
@@ -74,22 +82,22 @@ class UsersController extends Controller
     }
 
     public function edit(){
-      $user = Auth::user();
-      return view('user._edit')->with('user', $user);
+        $user = Auth::user();
+        return view('user._edit')->with('user', $user);
     }
 
     public function update(Request $request){
-      $user = Auth::user();
-      if($user->is_professor()){
-        $presentations = Presentation::where('professor_name', $user->name)->get();
-        foreach($presentations as $p){
-          $p->professor_name=$request['name'];
-          $p->save();
+        $user = Auth::user();
+        if($user->is_professor()){
+            $presentations = Presentation::where('professor_name', $user->name)->get();
+            foreach($presentations as $p){
+                $p->professor_name = $request['name'];
+                $p->save();
+            }
         }
-      }
-      $user->update($request->all());
-      flash()->success("Your profile has been updated");
-      return redirect(route('user.show', $user->id));
+        $user->update($request->all());
+        flash()->success("Your profile has been updated");
+        return redirect(route('user.show', $user->id));
 
     }
 }
