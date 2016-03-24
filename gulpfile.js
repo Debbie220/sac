@@ -27,5 +27,5 @@ elixir(function(mix) {
 
   mix.styles(
     'dragula.css',
-    'public/css/dragula.css')
+    'public/css/dragula.css');
 });
