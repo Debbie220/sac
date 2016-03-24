@@ -14,7 +14,7 @@ class AddStatusAttributeToPresentations extends Migration
     {
         Schema::table('presentations', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            //$table->dropColumn(['submitted', 'approved', 'declined']);
+            $table->dropColumn(['submitted', 'approved']);
             $table->string("status", 1);
             $table->foreign("status")->
                 references("id")->on("statuses");

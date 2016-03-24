@@ -21,10 +21,15 @@
                     <b>Professor:</b> {{ $p['professor_name'] }}
                 </p>
                 <p>
-                    <b>Student:</b> {{ $p['student_name'] }}
+                    <b>Students:</b> 
+                    <ul class="list-unstyled">
+                    @foreach($p->students() as $student)
+                        <li>{{ $student->student_name }}</li>
+                    @endforeach
+                    </ul>
                 </p>
                 <p>
-                    {{$p['abstract']}}
+                    <b>Abstract:</b> {{$p['abstract']}}
                 </p>
             </div>
         </td>
@@ -32,7 +37,7 @@
             {{ $p['our_nominee'] ? 'Yes' : 'No' }}
         </td>
         <td class="text-center">
-            {{ $presentation_types[$p['type']]['description'] }}
+            {{ $p->type()->get()->first()->description}}
         </td>
 
     </tr>

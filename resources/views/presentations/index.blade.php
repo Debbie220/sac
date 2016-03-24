@@ -6,4 +6,5 @@ Presentations
 
 @section('admin_content')
     @include('presentations._index_table')
+    {{ $presentations->links() }}
 @stop
