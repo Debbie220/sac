@@ -13,7 +13,7 @@
 
 		<div class="collapse" id="{{$course->id}}">
 			@include('user._presentations_table',
-				['presentations' => $course->presentations])
+				['presentations' => $course->presentations->toArray()])
 		</div>
 	@empty
 		Start by adding courses to your account.

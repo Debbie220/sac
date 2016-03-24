@@ -1,3 +1,4 @@
+@if(!empty($presentations))
 <div class="table-responsive">
 	<table class="table">
 		<tr class="row">
@@ -52,8 +53,9 @@
 					@else
 					alert-info
 					@endif">
-				{{$p->status()->get()->first()->description}}
-<div></td>
+					{{$p->status()->get()->first()->description}}
+				<div>
+			</td>
 			<td class="text-center">
 				@include('user._delete_presentation', ['id' => $p['id']])
 			</td>
@@ -61,3 +63,6 @@
 		@endforeach
 	</table>
 </div>
+@else
+	<p>You don't have any presentations here!</p>
+@endif

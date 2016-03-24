@@ -30,7 +30,7 @@ class UsersController extends Controller
         $user = Auth::user();
         if($id == $user->id){
             $presentations = $user->presentations()->
-            orderBy('updated_at','desc')->get();
+            orderBy('updated_at','desc')->get()->toArray();
             return view('user.show', compact('presentations'));
         }
         else {
@@ -63,7 +63,7 @@ class UsersController extends Controller
             flash()->error('You already have this course');
         }
 
-        return redirect(route('user.show', $user->id));
+        return redirect(route('my_courses'));
     }
 
     public function remove_course($id){
