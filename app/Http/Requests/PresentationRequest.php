@@ -28,16 +28,13 @@ class PresentationRequest extends Request
     {
         $rules =  [
             'professor_name' => 'required',
-            'student_name' => 'required',
             'course_id' => 'required',
             'title' => 'required',
             'type' => 'required',
         ];
 
         $user = Auth::user();
-        if($user->is_student()){
-            unset($rules['student_name']);
-        } else if ($user->is_professor()){
+        if ($user->is_professor()){
             unset($rules['professor_name']);
         }
 
