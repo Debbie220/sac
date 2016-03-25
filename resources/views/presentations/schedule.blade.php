@@ -7,21 +7,29 @@
 @stop
 
 @section('admin_content')
+
+<form method="POST" action="{{ route('presentation.book') }}">
+{{ csrf_field() }}
   <div class="col-md-6 container" id="drag-elements">
     @foreach($presentations as $index=>$p)
-      <div class = "row" id="p" + "{{ $p['id'] }}">
+      <div class = "row" id="p{{ $p['id'] }}">
         {{$p['title']}}
       </div>
     @endforeach
   </div>
-  <div class="col-md-2"></div>
+  <div class="col-md-2">
+    <button type="submit" class="btn btn-primary">
+        <i class="fa fa-floppy-o"></i> Save
+    </button>
+  </div>
   <div class="col-md-4">
     @foreach($timeslots as $timeslot)
       <h2>{{$timeslot->time}}, {{$timeslot->room_code}}</h2>
       <div id="{{$timeslot->id}}" class="drop-target well row" ></div>
     @endforeach
-
   </div>
+</form>
+
 @stop
 @include('footer')
 @push('scripts')
@@ -31,6 +39,11 @@
     drake.containers.push(getEl(String(timeslots[i]['id'])));
   }
 
-  
+  drake.on('drop', function(el,target){
+    var stringToInsert = "<input type = 'text' name=" + el['id'] + " value="+el['id']+">";
+    $(target).append(stringToInsert);
+  });
+
+
   </script>
 @endpush

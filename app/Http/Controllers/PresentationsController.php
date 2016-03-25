@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -227,6 +228,12 @@ class PresentationsController extends Controller
         'timeslots' => $timeslots
       ]);
       return view('presentations.schedule', compact('presentations', 'timeslots'));
+    }
+
+    public function update_schedule(){
+      $values = Input::all();
+      $dennis = $values['p2'];
+      return $dennis;
     }
 
 }

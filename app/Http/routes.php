@@ -22,6 +22,8 @@ Route::group(['middleware' => 'web'], function () {
             name('presentation.comment');
         Route::get('schedule', 'PresentationsController@show_schedule')->
             name('presentation.schedule');
+        Route::post('updateSchedule', 'PresentationsController@update_schedule')->
+            name('presentation.book');
     });
 
     Route::resource('user', 'UsersController', ['only' => 'show']);
