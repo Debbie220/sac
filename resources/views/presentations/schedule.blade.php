@@ -9,13 +9,17 @@
 @section('admin_content')
   <div class="col-md-6 container" id="drag-elements">
     @foreach($presentations as $index=>$p)
-      <div class = "row" id="{{ $p['id'] }}">
-          {{ $p->type()->get()->first()->description}} {{$p['title']}}
+      <div class = "row" id="p" + "{{ $p['id'] }}">
+        {{$p['title']}}
       </div>
     @endforeach
   </div>
   <div class="col-md-2"></div>
-  <div class="col-md-4 drop-target" id="drop-target">
+  <div class="col-md-4">
+    @foreach($timeslots as $timeslot)
+      <h2>{{$timeslot->time}}, {{$timeslot->room_code}}</h2>
+      <div id="{{$timeslot->id}}" class="drop-target well row" ></div>
+    @endforeach
 
   </div>
 @stop
@@ -23,6 +27,10 @@
 @push('scripts')
   <script src="{{ asset('js/dragula.js') }}"></script>
   <script>
-  console.log(timeslots);
+  for (var i = 0; i<timeslots.length; i++){
+    drake.containers.push(getEl(String(timeslots[i]['id'])));
+  }
+
+  
   </script>
 @endpush

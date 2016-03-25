@@ -7,7 +7,7 @@ var drake = dragula([getEl('drag-elements')], {
 })
 ;
 
-drake.containers.push(getEl('drop-target'));
+// drake.containers.push(getEl('drop-target'));
 // for (var i=0; i<time.length; i++){
 //   drake.containers.push($(String(times[i]['id'])));
 // };
