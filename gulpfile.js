@@ -29,6 +29,6 @@ elixir(function(mix) {
   mix.version(['public/css/app.css']);
 
   mix.styles(
-    'dragula.css',
+    ['dragula.css', 'drag.css'],
     'public/css/dragula.css');
 });

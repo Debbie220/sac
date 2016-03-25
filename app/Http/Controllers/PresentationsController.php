@@ -69,7 +69,7 @@ class PresentationsController extends Controller
 
         if($presentation->save()){
             $this->save_students($students, $presentation->id);
-            flash()->success("Presentation saved. 
+            flash()->success("Presentation saved.
                 Don't forget to submit it to SAC coodinator");
         } else {
             flash()->error("Presentation couldn't be saved");
@@ -197,7 +197,7 @@ class PresentationsController extends Controller
                     ['presentation_id' => $id,
                     'student_name' => $student]);
             } catch(\Illuminate\Database\QueryException $e){
-                flash()->error('This student is already 
+                flash()->error('This student is already
                     registered for this presentation');
             }
         }
@@ -216,6 +216,11 @@ class PresentationsController extends Controller
         $students = $presentation->students();
         return view('presentations.'.$action,
             compact('courses', 'presentation_types', 'presentation', 'students'));
+    }
+
+    public function show_schedule(){
+      $presentations = Presentation::where('status', 'A')->get();
+      return view('presentations.schedule', compact('presentations'));
     }
 
 }

@@ -20,6 +20,8 @@ Route::group(['middleware' => 'web'], function () {
             name('presentation.decline');
         Route::post('{id}/decline', 'PresentationsController@save_comment')->
             name('presentation.comment');
+        Route::get('schedule', 'PresentationsController@show_schedule')->
+            name('presentation.schedule');
     });
 
     Route::resource('user', 'UsersController', ['only' => 'show']);
