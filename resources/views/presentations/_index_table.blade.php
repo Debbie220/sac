@@ -7,7 +7,7 @@
       </tr>
 
       @foreach($presentations as $index=>$p)
-      <tr class="row well" id="{{ $p['id'] }}">
+      <tr class="row" id="{{ $p['id'] }}">
           <td>
               <h4>
                   <a data-toggle="collapse"
