@@ -14,7 +14,9 @@ use App\Http\Requests\PresentationRequest;
 
 use App\Course;
 use App\Presentation;
+use App\Timeslot;
 use App\PresentationType;
+use JavaScript;
 
 class PresentationsController extends Controller
 {
@@ -220,7 +222,11 @@ class PresentationsController extends Controller
 
     public function show_schedule(){
       $presentations = Presentation::where('status', 'A')->get();
-      return view('presentations.schedule', compact('presentations'));
+      $timeslots = Timeslot::all();
+      JavaScript::put([
+        'timeslots' => $timeslots
+      ]);
+      return view('presentations.schedule', compact('presentations', 'timeslots'));
     }
 
 }

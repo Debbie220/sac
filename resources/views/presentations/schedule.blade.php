@@ -10,29 +10,7 @@
   <div class="col-md-6 container" id="drag-elements">
     @foreach($presentations as $index=>$p)
       <div class = "row" id="{{ $p['id'] }}">
-        <h4>
-            <a data-toggle="collapse"
-                href="#{{$index}}" aria-expanded="false"
-                aria-controls="details">
-                {{$p['title']}}
-            </a>
-        </h4>
-        <div id="{{$index}}" class="collapse">
-            <p>
-                <b>Professor:</b> {{ $p['professor_name'] }}
-            </p>
-            <p>
-                <b>Students:</b>
-                <ul class="list-unstyled">
-                @foreach($p->students() as $student)
-                    <li>{{ $student->student_name }}</li>
-                @endforeach
-                </ul>
-            </p>
-            <p>
-                <b>Abstract:</b> {{$p['abstract']}}
-            </p>
-        </div>
+          {{ $p->type()->get()->first()->description}} {{$p['title']}}
       </div>
     @endforeach
   </div>
@@ -41,6 +19,10 @@
 
   </div>
 @stop
+@include('footer')
 @push('scripts')
   <script src="{{ asset('js/dragula.js') }}"></script>
+  <script>
+  console.log(timeslots);
+  </script>
 @endpush
