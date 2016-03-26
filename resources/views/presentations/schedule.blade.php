@@ -12,7 +12,7 @@
 {{ csrf_field() }}
   <div class="col-md-6 container" id="drag-elements">
     @foreach($presentations as $index=>$p)
-      <div class = "row" id="p{{ $p['id'] }}">
+      <div class = "row" id="presentation_{{ $p['id'] }}">
         {{$p['title']}}
       </div>
     @endforeach
@@ -26,6 +26,8 @@
     @foreach($timeslots as $timeslot)
       <h2>{{$timeslot->time}}, {{$timeslot->room_code}}</h2>
       <div id="{{$timeslot->id}}" class="drop-target well row" ></div>
+      <input type='text' name='timeslots[]' value="{{ $timeslot->id }}"
+          class='hidden'>
     @endforeach
   </div>
 </form>
@@ -40,7 +42,7 @@
   }
 
   drake.on('drop', function(el,target){
-    var stringToInsert = "<input type = 'text' name=" + el['id'] + " value="+el['id']+">";
+    var stringToInsert = "<input type = 'text' name=" + target['id'] + "[] value="+el['id']+">";
     $(target).append(stringToInsert);
   });
 

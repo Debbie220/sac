@@ -231,9 +231,20 @@ class PresentationsController extends Controller
     }
 
     public function update_schedule(){
-      $values = Input::all();
-      $dennis = $values['p2'];
-      return $dennis;
+      $formvalues = Input::all();
+      $timeslots = $formvalues['timeslots'];
+      foreach ($timeslots as $timeslot){
+        print($timeslot . ":......");
+        if (Input::has($timeslot)){
+          foreach ($formvalues[$timeslot] as $identifier){
+            $presentation = Presentation::findOrFail(substr($identifier,-1));
+            $presentation->timeslot = $timeslot;
+            $presentation->save();
+          }
+        }
+      }
+
+
     }
 
 }
