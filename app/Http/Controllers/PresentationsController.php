@@ -241,6 +241,14 @@ class PresentationsController extends Controller
             $presentation->save();
           }
         }
+        if (Input::has('drag-elements')){
+          foreach ($formvalues['drag-elements'] as $identifier){
+            $presentation = Presentation::findOrFail(substr($identifier,-1));
+            $presentation->timeslot = null;
+            $presentation->save();
+            }
+          }
+
       }
     return redirect()->route('presentation.schedule');
 
