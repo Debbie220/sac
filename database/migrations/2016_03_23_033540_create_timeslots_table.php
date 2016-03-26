@@ -20,9 +20,11 @@ class CreateTimeslotsTable extends Migration
           $table->integer('conference_id')->unsigned();
 
           $table->foreign('room_code')->
-              references('code')->on('rooms');
+              references('code')->on('rooms')->
+                onDelete('cascade');
           $table->foreign('conference_id')->
-              references('id')->on('conferences');
+              references('id')->on('conferences')->
+                onDelete('cascade');
           $table->timestamps();
         });
     }
