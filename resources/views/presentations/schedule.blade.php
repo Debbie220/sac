@@ -41,9 +41,16 @@
     drake.containers.push(getEl(String(timeslots[i]['id'])));
   }
 
-  drake.on('drop', function(el,target){
-    var stringToInsert = "<input type = 'text' name=" + target['id'] + "[] value="+el['id']+">";
+  drake.on('drop', function(el,target, source){
+    //if we are dragging from a differnt timeslot, we
+    //need to delete what was inserted into that other timeslot
+    if ($(source).attr('id') !== "drag-elements"){
+      $("input[value='" + el['id'] + "']").remove();
+    }
+    var stringToInsert = "<input type = 'text' name=" + target['id'] +
+      "[] value="+el['id']+">";
     $(target).append(stringToInsert);
+
   });
 
 

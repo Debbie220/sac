@@ -234,7 +234,6 @@ class PresentationsController extends Controller
       $formvalues = Input::all();
       $timeslots = $formvalues['timeslots'];
       foreach ($timeslots as $timeslot){
-        print($timeslot . ":......");
         if (Input::has($timeslot)){
           foreach ($formvalues[$timeslot] as $identifier){
             $presentation = Presentation::findOrFail(substr($identifier,-1));
@@ -243,7 +242,7 @@ class PresentationsController extends Controller
           }
         }
       }
-
+    return redirect()->route('presentation.schedule');
 
     }
 
