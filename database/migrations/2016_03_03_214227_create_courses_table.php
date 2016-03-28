@@ -16,7 +16,7 @@ class CreateCoursesTable extends Migration
             $table->engine = 'InnoDB';
             
             $table->increments('id');
-            $table->string('subject_code', 3);
+            $table->string('subject_code', 5);
             $table->string('number', 4);
             $table->string('title', 100);
 
