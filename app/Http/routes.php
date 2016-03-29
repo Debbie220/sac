@@ -48,6 +48,7 @@ Route::group(['middleware' => 'web'], function () {
                   name('new_conference');
         Route::post('new_conference', 'AdminController@create_conference')->
                   name('create_conference');
+    });
     Route::group(['prefix' => 'course'], function (){
         Route::get('index', 'CoursesController@index')->name('course.index');
         Route::post('add', 'CoursesController@new_courses')->name('course.add');
