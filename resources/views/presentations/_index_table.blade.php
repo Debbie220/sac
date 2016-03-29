@@ -1,9 +1,9 @@
-<div class="col-md-6">
+<div class="col-md-10">
 <table class="table">
     <tr class="row">
-        <th class="col-lg-10 col-md-10 col-sm-10 text-center"></th>
-        <th class="col-lg-1 col-md-1 col-sm-1 text-center">OUR Nominee</th>
-        <th class="col-lg-1 col-md-1 col-sm-1 text-center">Type</th>
+      <th class="col-lg-8 col-md-8 col-sm-8 text-center"></th>
+      <th class="col-lg-2 col-md-2 col-sm-2 text-center">OUR Nominee</th>
+      <th class="col-lg-2 col-md-2 col-sm-2 text-center">Type</th>
     </tr>
 
     @foreach($presentations as $index=>$p)
