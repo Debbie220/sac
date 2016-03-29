@@ -66,12 +66,16 @@ class PresentationsController extends Controller
 
         $presentation = new Presentation($fields);
         $presentation->owner = $user->id;
-        $presentation->status = "S";
+        if($user->is_admin()){
+            $presentation->status = "A";
+        }else {
+            $presentation->status = "S";
+        }
 
         if($presentation->save()){
             $this->save_students($students, $presentation->id);
-            flash()->success("Presentation saved. 
-                Don't forget to submit it to SAC coodinator");
+
+            flash()->success("Presentation saved.");
         } else {
             flash()->error("Presentation couldn't be saved");
         }
@@ -220,5 +224,4 @@ class PresentationsController extends Controller
         return view('presentations.'.$action,
             compact('courses', 'presentation_types', 'presentation', 'students'));
     }
-
 }
