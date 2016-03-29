@@ -29,6 +29,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::resource('user', 'UsersController', ['only' => 'show']);
 
     Route::resource('room', 'RoomsController');
+    Route::put('changeAvailability/{id}', 'RoomsController@changeAvailability')->
+            name('changeAvailability');
+
     Route::group(['prefix' => 'role'], function () {
         Route::get('requests', 'RolesController@index')->
             name('role.index');
@@ -41,13 +44,13 @@ Route::group(['middleware' => 'web'], function () {
     });
 
     Route::group(['prefix' => 'admin'], function () {
-        Route::put('changeAvailability/{id}', 'RoomsController@changeAvailability')->
-            name('changeAvailability');
-        Route::get('courses', 'AdminController@view_courses')->name('courses');
         Route::get('new_conference', 'AdminController@make_conference')->
                   name('new_conference');
         Route::post('new_conference', 'AdminController@create_conference')->
                   name('create_conference');
+    Route::group(['prefix' => 'course'], function (){
+        Route::get('index', 'CoursesController@index')->name('course.index');
+        Route::post('add', 'CoursesController@new_courses')->name('course.add');
     });
 
     Route::group(['prefix' => 'professor/my'], function () {

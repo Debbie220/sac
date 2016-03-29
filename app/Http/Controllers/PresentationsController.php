@@ -34,7 +34,8 @@ class PresentationsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $presentations = Presentation::orderBy('updated_at','desc')->paginate(10);
+        $presentations = Presentation::orderBy('updated_at','desc')->
+            orderBy('course_id')->paginate(10);
 
         return view('presentations.index',
             compact('presentations'));
@@ -68,12 +69,15 @@ class PresentationsController extends Controller
 
         $presentation = new Presentation($fields);
         $presentation->owner = $user->id;
-        $presentation->status = "S";
+        if($user->is_admin()){
+            $presentation->status = "A";
+        }else {
+            $presentation->status = "S";
+        }
 
         if($presentation->save()){
             $this->save_students($students, $presentation->id);
-            flash()->success("Presentation saved.
-                Don't forget to submit it to SAC coodinator");
+            flash()->success("Presentation saved.");
         } else {
             flash()->error("Presentation couldn't be saved");
         }
@@ -210,9 +214,11 @@ class PresentationsController extends Controller
         $user = Auth::user();
 
         if($user->is_professor())
-            $courses = $user->courses;
+            $courses = $user->courses()->where('offered_this_semester', true)->get();
         else
-            $courses = Course::orderBy('subject_code', 'asc')->get();
+            $courses = Course::where('offered_this_semester', true)->
+                orderBy('subject_code', 'asc')->
+                orderBy('number')->get();
 
         $presentation_types = PresentationType::all();
 
@@ -253,5 +259,4 @@ class PresentationsController extends Controller
     return redirect()->route('presentation.schedule');
 
     }
-
 }
