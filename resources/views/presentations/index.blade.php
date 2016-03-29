@@ -33,12 +33,18 @@ Presentations
                     <p>
                         <b>Abstract:</b> {{$p['abstract']}}
                     </p>
+                    <p>
+                        <a href="{{ route('presentation.edit', $p['id'])}}"
+                            class="btn btn-default">
+                            Edit this presentation
+                        </a>
+                    </p>
                 </div>
             </div>
 
             <div class="col-lg-1 col-md-1 col-sm-1 text-center">
                 @if($p['our_nominee'])
-                    <i class="fa fa-star fa-lg"></i>
+                    <span title="OUR Nominee"><i class="fa fa-star fa-lg"></i></span>
                 @endif
             </div>
 
@@ -66,4 +72,7 @@ Presentations
         <h4>No presentations yet!</h4>
     @endforelse
     {{ $presentations->links() }}
+
+    <i class="fa fa-star fa-lg"></i> = OUR Nominee
+    <br>
 @stop
