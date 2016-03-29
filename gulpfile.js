@@ -18,10 +18,10 @@ elixir(function(mix) {
   var bootstrapPath = 'node_modules/bootstrap-sass/assets';
   mix.sass('app.scss')
     .copy(bootstrapPath + '/fonts', 'public/fonts');
-  
+
   mix.scripts(['jquery.min.js','bootstrap.min.js'])
   mix.scripts('add_student.js', 'public/js/add_student.js')
-
+  mix.scripts('add_day.js', 'public/js/add_day.js')
 
   mix.version(['public/css/app.css']);
 });
