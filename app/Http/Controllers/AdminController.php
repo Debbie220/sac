@@ -26,6 +26,7 @@ class AdminController extends Controller
 
     public function make_conference(){
       $days =[1,2,3,4,5];
+      $numDays=1;
       $start = "00:00";
       $end = "23:30";
       $times=[];
@@ -40,7 +41,7 @@ class AdminController extends Controller
         $times[$i] = date("H:i", $tNow)."\n";
         $i = $i + 1;
       }
-      return view('user.admin.new_conference', compact('days', 'times'));
+      return view('user.admin.new_conference', compact('days', 'times', 'numDays'));
     }
 
     public function create_conference(Request $request){
