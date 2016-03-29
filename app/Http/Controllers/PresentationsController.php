@@ -17,6 +17,7 @@ use App\Course;
 use App\Presentation;
 use App\Timeslot;
 use App\PresentationType;
+use App\Conference;
 use JavaScript;
 
 class PresentationsController extends Controller
@@ -229,7 +230,8 @@ class PresentationsController extends Controller
 
     public function show_schedule(){
       $presentations = Presentation::where('status', 'A')->get();
-      $timeslots = Timeslot::all();
+      $conference = Conference::orderBy('id','desc')->first();
+      $timeslots = Timeslot::where('conference_id', $conference->id)->get();
       JavaScript::put([
         'timeslots' => $timeslots
       ]);
@@ -257,6 +259,5 @@ class PresentationsController extends Controller
 
       }
     return redirect()->route('presentation.schedule');
-
     }
 }
