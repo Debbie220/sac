@@ -1,7 +1,10 @@
 @extends('user.admin.basepage')
 
+@section('header')
+Pending Presentations
+@stop
+
 @section('admin_content')
-<h1> Presentations </h1>
 <div class="table-responsive">
   <table class="table">
     <tr class="row">
