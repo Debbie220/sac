@@ -20,6 +20,8 @@ class CoursesController extends Controller
     }
 
     public function new_courses(){
+        Course::where('offered_this_semester', true)->
+            update(['offered_this_semester' => false]);
         $courseSeeder = new \CourseTableSeeder();
         $courseSeeder->run();
         return redirect(route('course.index'));

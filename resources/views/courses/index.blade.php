@@ -5,7 +5,14 @@ Courses
 @stop
 
 @section('add_object')
-<a href="{{route('course.add')}}" class="btn btn-primary">Check for new Courses</a>
+ <form action="{{route('course.add')}}" method="POST">
+    {{ csrf_field() }}
+
+    <button type="submit" class="btn btn-primary"
+            aria-label="Delete Presentation" title="Delete Presentation">
+            Check for new Courses
+    </button>
+</form>
 @stop
 
 @section('admin_content')
