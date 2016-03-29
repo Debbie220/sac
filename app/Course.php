@@ -23,4 +23,8 @@ class Course extends Model
     public function professors(){
         return $this->belongsToMany('App\User', 'user_courses');
     }
+
+    public function toString(){
+        return $this->subject_code . " " . $this->number . " - " . $this->title;
+    }
 }

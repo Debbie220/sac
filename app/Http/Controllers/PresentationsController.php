@@ -31,7 +31,8 @@ class PresentationsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $presentations = Presentation::orderBy('updated_at','desc')->paginate(10);
+        $presentations = Presentation::orderBy('updated_at','desc')->
+            orderBy('course_id')->paginate(10);
 
         return view('presentations.index',
             compact('presentations'));
