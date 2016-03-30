@@ -22,9 +22,6 @@ Presentations
                     </h4>
                     <div id="{{$index}}" class="collapse">
                         <p>
-                            <b>Course:</b> {{ $p->course()->get()->first()->toString() }}
-                        </p>
-                        <p>
                             <b>Professor:</b> {{ $p['professor_name'] }}
                         </p>
                         <p>
