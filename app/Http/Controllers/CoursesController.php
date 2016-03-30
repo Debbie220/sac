@@ -26,4 +26,10 @@ class CoursesController extends Controller
         $courseSeeder->run();
         return redirect(route('course.index'));
     }
+
+    public function search_by_name($name){
+        $courses = Course::where('name', 'like', '%'.$name.'%')->
+            orderBy('number')->paginate(10);
+        // return view('courses.index')->with('courses', $courses);
+    }
 }

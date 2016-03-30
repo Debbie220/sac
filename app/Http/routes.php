@@ -41,6 +41,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::group(['prefix' => 'course'], function (){
         Route::get('index', 'CoursesController@index')->name('course.index');
         Route::post('add', 'CoursesController@new_courses')->name('course.add');
+        Route::get('index?{name}', 'CoursesController@search_by_name')->
+            name('course.search');
     });
 
     Route::group(['prefix' => 'professor/my'], function () {
