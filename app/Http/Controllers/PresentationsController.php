@@ -228,14 +228,18 @@ class PresentationsController extends Controller
             compact('courses', 'presentation_types', 'presentation', 'students'));
     }
 
-    public function show_schedule(){
+    public function show_schedule($display_room = 'FL2'){
       $presentations = Presentation::where('status', 'A')->get();
       $conference = Conference::orderBy('id','desc')->first();
       $timeslots = Timeslot::where('conference_id', $conference->id)->get();
+      $rooms = Timeslot::where('conference_id',$conference->id)->
+          select('room_code')->distinct()->get();
+
       JavaScript::put([
         'timeslots' => $timeslots
       ]);
-      return view('presentations.schedule', compact('presentations', 'timeslots'));
+      return view('presentations.schedule', compact('presentations',
+      'rooms','display_room', 'timeslots'));
     }
 
     public function update_schedule(){

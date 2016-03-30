@@ -7,7 +7,6 @@
 @stop
 
 @section('admin_content')
-
 <form method="POST" action="{{ route('presentation.book') }}">
 {{ csrf_field() }}
   <div class="col-md-6 container" id="drag-elements">
@@ -25,6 +24,18 @@
     </button>
   </div>
   <div class="col-md-4">
+    <div class="row well">
+      @foreach($rooms as $room)
+        @if ($room->room_code == $display_room)
+          <a href="{{ route('presentation.schedule', ['display_room' => $room->room_code]) }}" class="btn btn-success">{{$room->room_code}}</a>
+        @else
+          <a href="{{ route('presentation.schedule', ['display_room' => $room->room_code]) }}" class="btn btn-primary">{{$room->room_code}}</a>
+        @endif
+      @endforeach
+
+
+
+    </div>
     @foreach($timeslots as $timeslot)
       <h2>{{$timeslot->time}}, {{$timeslot->room_code}}</h2>
       <div id="{{$timeslot->id}}" class="drop-target well row" >
