@@ -14,9 +14,21 @@ class CoursesController extends Controller
         $this->middleware('admin');
     }
 
-    public function index(){
-        $courses = Course::orderBy('subject_code')->
-            orderBy('number')->paginate(10);
+    public function index(Request $request){
+        $courses = [];
+        try{
+            $title = $request->all()['title'];
+            $subject = $request->all()['subject'];
+            $number = $request->all()['number'];
+        
+            $courses = Course::where('title', 'like', '%'.$title.'%')->
+                where('subject_code', 'like', '%'.$subject.'%')->
+                where('number', 'like', '%'.$number.'%')->
+                orderBy('subject_code')->orderBy('number')->paginate(10);
+        } catch(\ErrorException $e){
+            $courses = Course::orderBy('subject_code')->
+                orderBy('number')->paginate(10);
+        }
         return view('courses.index')->with('courses', $courses);
     }
 
@@ -28,9 +40,4 @@ class CoursesController extends Controller
         return redirect(route('course.index'));
     }
 
-    public function search_by_name($name){
-        $courses = Course::where('name', 'like', '%'.$name.'%')->
-            orderBy('number')->paginate(10);
-        // return view('courses.index')->with('courses', $courses);
-    }
 }

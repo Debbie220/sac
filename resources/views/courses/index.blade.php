@@ -17,14 +17,26 @@ Courses
 
 @section('admin_content')
     <div class="row">
-        <div class="col-lg-6">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search for...">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">Search</button>
-                </span>
-            </div><!-- /input-group -->
-        </div><!-- /.col-lg-6 -->
+        <form action="{{route('course.index')}}" method="GET">
+            <div class="form-group">   
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <input type="text" class="form-control" maxlength="5" 
+                            placeholder="Subject" name="subject">
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <input type="text" class="form-control" maxlength="4" 
+                            placeholder="Number" name="number">
+                </div>
+                <div class="col-lg-7 col-md-7 col-sm-7 ">
+                    <input type="text" class="form-control"
+                            placeholder="Course Name" name="title">
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1">
+                    <input class="btn btn-default" type="submit" 
+                        value="Search"></input>
+                </div>
+            </div>
+        </form>
     </div>
     <br>
     @forelse($courses as $course)
