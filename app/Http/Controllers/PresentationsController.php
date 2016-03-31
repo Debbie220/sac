@@ -228,10 +228,11 @@ class PresentationsController extends Controller
             compact('courses', 'presentation_types', 'presentation', 'students'));
     }
 
-    public function show_schedule($display_room = 'FL2'){
+    public function show_schedule($display_room = null){
       $presentations = Presentation::where('status', 'A')->get();
       $conference = Conference::orderBy('id','desc')->first();
-      $timeslots = Timeslot::where('conference_id', $conference->id)->get();
+      $timeslots = Timeslot::where('conference_id', $conference->id)->
+                      where('room_code', $display_room)->get();
       $rooms = Timeslot::where('conference_id',$conference->id)->
           select('room_code')->distinct()->get();
 
@@ -242,26 +243,28 @@ class PresentationsController extends Controller
       'rooms','display_room', 'timeslots'));
     }
 
-    public function update_schedule(){
-      $formvalues = Input::all();
-      $timeslots = $formvalues['timeslots'];
-      foreach ($timeslots as $timeslot){
-        if (Input::has($timeslot)){
-          foreach ($formvalues[$timeslot] as $identifier){
-            $presentation = Presentation::findOrFail(substr($identifier,-1));
-            $presentation->timeslot = $timeslot;
-            $presentation->save();
-          }
-        }
-        if (Input::has('drag-elements')){
-          foreach ($formvalues['drag-elements'] as $identifier){
-            $presentation = Presentation::findOrFail(substr($identifier,-1));
-            $presentation->timeslot = null;
-            $presentation->save();
+    public function update_schedule($display_room = null){
+      if (Input::has('timeslots')){
+        $formvalues = Input::all();
+        $timeslots = $formvalues['timeslots'];
+        foreach ($timeslots as $timeslot){
+          if (Input::has($timeslot)){
+            foreach ($formvalues[$timeslot] as $identifier){
+              $presentation = Presentation::findOrFail(substr($identifier,-1));
+              $presentation->timeslot = $timeslot;
+              $presentation->save();
             }
           }
+          if (Input::has('drag-elements')){
+            foreach ($formvalues['drag-elements'] as $identifier){
+              $presentation = Presentation::findOrFail(substr($identifier,-1));
+              $presentation->timeslot = null;
+              $presentation->save();
+              }
+            }
 
+        }
       }
-    return redirect()->route('presentation.schedule');
+    return redirect()->route('presentation.schedule', compact('display_room'));
     }
 }

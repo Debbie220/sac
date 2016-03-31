@@ -22,7 +22,7 @@ Route::group(['middleware' => 'web'], function () {
             name('presentation.comment');
         Route::get('schedule/{display_room?}', 'PresentationsController@show_schedule')->
             name('presentation.schedule');
-        Route::post('updateSchedule', 'PresentationsController@update_schedule')->
+        Route::post('updateSchedule/{display_room?}', 'PresentationsController@update_schedule')->
             name('presentation.book');
     });
 
