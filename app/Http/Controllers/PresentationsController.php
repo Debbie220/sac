@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -14,7 +15,10 @@ use App\Http\Requests\PresentationRequest;
 
 use App\Course;
 use App\Presentation;
+use App\Timeslot;
 use App\PresentationType;
+use App\Conference;
+use JavaScript;
 
 class PresentationsController extends Controller
 {
@@ -74,7 +78,6 @@ class PresentationsController extends Controller
 
         if($presentation->save()){
             $this->save_students($students, $presentation->id);
-
             flash()->success("Presentation saved.");
         } else {
             flash()->error("Presentation couldn't be saved");
@@ -202,7 +205,7 @@ class PresentationsController extends Controller
                     ['presentation_id' => $id,
                     'student_name' => $student]);
             } catch(\Illuminate\Database\QueryException $e){
-                flash()->error('This student is already 
+                flash()->error('This student is already
                     registered for this presentation');
             }
         }
@@ -223,5 +226,45 @@ class PresentationsController extends Controller
         $students = $presentation->students();
         return view('presentations.'.$action,
             compact('courses', 'presentation_types', 'presentation', 'students'));
+    }
+
+    public function show_schedule($display_room = null){
+      $presentations = Presentation::where('status', 'A')->get();
+      $conference = Conference::orderBy('id','desc')->first();
+      $timeslots = Timeslot::where('conference_id', $conference->id)->
+                      where('room_code', $display_room)->get();
+      $rooms = Timeslot::where('conference_id',$conference->id)->
+          select('room_code')->distinct()->get();
+
+      JavaScript::put([
+        'timeslots' => $timeslots
+      ]);
+      return view('presentations.schedule', compact('presentations',
+      'rooms','display_room', 'timeslots'));
+    }
+
+    public function update_schedule($display_room = null){
+      if (Input::has('timeslots')){
+        $formvalues = Input::all();
+        $timeslots = $formvalues['timeslots'];
+        foreach ($timeslots as $timeslot){
+          if (Input::has($timeslot)){
+            foreach ($formvalues[$timeslot] as $identifier){
+              $presentation = Presentation::findOrFail(substr($identifier,-1));
+              $presentation->timeslot = $timeslot;
+              $presentation->save();
+            }
+          }
+          if (Input::has('drag-elements')){
+            foreach ($formvalues['drag-elements'] as $identifier){
+              $presentation = Presentation::findOrFail(substr($identifier,-1));
+              $presentation->timeslot = null;
+              $presentation->save();
+              }
+            }
+
+        }
+      }
+    return redirect()->route('presentation.schedule', compact('display_room'));
     }
 }
