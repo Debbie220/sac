@@ -3,7 +3,7 @@
 
   <div class="col-md-1 button">
     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-center">
-        <a class="btn btn-default" onclick="addDay(); enable();">
+        <a class="btn btn-default" id="button" onclick="enable(); addDay();">
             Add a Day
         </a>
     </div>
@@ -12,7 +12,7 @@
 
 
 <div id=all-days>
-  @for($i= 1; $i <= $_SESSION['numDays']; $i++)
+  @for($i= 1; $i <= $numDays; $i++)
   <h3><b> Day {{$i}} </b></h3>
   <div class="form-group{{ $errors->has('start_time') ? ' has-error' : '' }}">
     <label class="col-md-3 control-label">Start time</label>
@@ -49,12 +49,11 @@
   @endfor
 </div>
 
+<div class="hidden header"><h3><b> j </b></h3></div>
 
 <div class="hidden form-group new-day">
-
-  <h3 id='num'><b> Day {{$_SESSION['numDays']=$_SESSION['numDays'] + 1}} </b></h3>
   <div class="form-group{{ $errors->has('start_time') ? ' has-error' : '' }}">
-    <label class="col-md-3 control-label">Start time</label>
+    <label class="col-md-3 control-label">First timeslot</label>
 
     <div class="col-md-6">
       <select type="text" class="form-control" name="start_time[]" id="startTime" disabled>
@@ -71,7 +70,7 @@
   </div>
 
   <div class="form-group{{ $errors->has('end_time') ? ' has-error' : '' }}">
-    <label class="col-md-3 control-label"> Start time of latest presentation</label>
+    <label class="col-md-3 control-label"> Last timeslot</label>
 
     <div class="col-md-6">
       <select type="text" onchange="enable()" class="form-control" name="end_time[]" id="endTime" disabled>
@@ -90,17 +89,25 @@
 
 @section('scripts')
 <script>
+
+var numdays = 1;
+
 function enable() {
     document.getElementById("endTime").disabled=false;
     document.getElementById("startTime").disabled=false;
 }
+
 function addDay(){
+  numdays = numdays + 1;
   var day = $(".new-day").last().clone();
+  var header = $(".header").last().clone();
+  header.removeClass("hidden");
+  header.find("b").text("Day "  + numdays);
   day.removeClass("hidden");
-  //document.getElementById("num").innerHTML=day1;
-  day.find("input").prop('disabled', false);
-  //{{$_SESSION['numDays'] = $_SESSION['numDays'] + 1}};
+  enable();
+  header.appendTo("#all-days");
   day.appendTo("#all-days");
+
 }
 </script>
 @stop
