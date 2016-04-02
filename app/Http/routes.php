@@ -1,6 +1,8 @@
 <?php
 Route::group(['middleware' => 'web'], function () {
     Route::get('/', 'StaticPagesController@home')->name('home');
+    Route::get('edit', 'UsersController@edit')->name('edit');
+    Route::post('update', 'UsersController@update')->name('update');
     Route::auth();
 
     Route::resource('presentation', 'PresentationsController',
