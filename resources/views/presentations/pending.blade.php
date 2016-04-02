@@ -13,7 +13,7 @@
     </tr>
       @foreach($presentations as $p)
       <tr class="row">
-        <td class="text-center">
+        <td id="title" class="text-center">
           <a href="{!! route('presentation.edit', $p->id) !!}">
           {{$p->title}} </a>
         </td>
@@ -37,20 +37,19 @@
           </form>
         </td>
         <td class="text-center">
-          <form action="{{ route('presentation.decline', $p->id)}}" role='form' method="POST">
-            {{ csrf_field() }}
-          	{{ method_field('PATCH') }}
             <div class="form-group">
-                  <button type="submit" class="btn btn-default">
+                  <button type="button" class="btn btn-default" onclick="comments();">
                        <i class="fa fa-thumbs-down"></i>Decline
                   </button>
             </div>
-          </form>
         </td>
       </tr>
       @endforeach
   </table>
 </div>
+@include('presentations.comments')
+@stop
 
-
+@section('scripts')
+<script src="{{ asset('js/commenting.js') }}"></script>
 @stop
