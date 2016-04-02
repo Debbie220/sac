@@ -24,8 +24,8 @@ Route::group(['middleware' => 'web'], function () {
             name('presentation.schedule');
         Route::post('updateSchedule/{display_room?}', 'PresentationsController@update_schedule')->
             name('presentation.book');
-        Route::post('deleteTime/{id}', 'PresentationsController@deleteTime')->
-            name('delete_time')
+        Route::get('deleteTime/{display_room}/{id}', 'PresentationsController@deleteTime')->
+            name('delete_time');
     });
 
     Route::resource('user', 'UsersController', ['only' => 'show']);

@@ -268,7 +268,8 @@ class PresentationsController extends Controller
     return redirect()->route('presentation.schedule', compact('display_room'));
     }
 
-    public function deleteTime($id){
-      print('hi');
+    public function deleteTime($display_room, $id){
+      Timeslot::destroy($id);
+      return redirect()->route('presentation.schedule', compact('display_room'));
     }
 }
