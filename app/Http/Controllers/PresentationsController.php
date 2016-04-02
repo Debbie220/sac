@@ -267,4 +267,8 @@ class PresentationsController extends Controller
       }
     return redirect()->route('presentation.schedule', compact('display_room'));
     }
+
+    public function deleteTime($id){
+      print('hi');
+    }
 }
