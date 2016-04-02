@@ -83,9 +83,9 @@ class AdminController extends Controller
             }
           }
         }
-        // flash()->success("New conference created successfully!!");
-        // return redirect()->route('user.show', Auth::user()->id);
-        return Timeslot::where('conference_id', $conference->id)->get();
+        flash()->success("New conference created successfully!!");
+        return redirect()->route('user.show', Auth::user()->id);
+        //return Timeslot::where('conference_id', $conference->id)->get();
 
     }
 
