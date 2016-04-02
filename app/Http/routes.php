@@ -1,6 +1,8 @@
 <?php
 Route::group(['middleware' => 'web'], function () {
     Route::get('/', 'StaticPagesController@home')->name('home');
+    Route::get('edit', 'UsersController@edit')->name('edit');
+    Route::post('update', 'UsersController@update')->name('update');
     Route::auth();
 
     Route::resource('presentation', 'PresentationsController',
@@ -36,6 +38,8 @@ Route::group(['middleware' => 'web'], function () {
         Route::put('changeAvailability/{id}', 'RoomsController@changeAvailability')->
             name('changeAvailability');
         Route::get('courses', 'AdminController@view_courses')->name('courses');
+        Route::get('new_conference', 'AdminController@make_conference')->name('new_conference');
+        Route::get('create_conference', 'AdminController@create_conference')->name('create_conference');
     });
 
     Route::group(['prefix' => 'professor/my'], function () {
