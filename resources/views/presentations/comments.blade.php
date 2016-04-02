@@ -1,10 +1,10 @@
-@extends('user.admin.basepage')
 
-@section('admin_content')
-<form action="{{ route('presentation.comment', $presentation->id)}}" method="POST" role='form'>
+<div class="hidden comments">
+<form action="{{ route('presentation.comment', $p->id)}}" method="POST" role='form'>
   <input type="hidden" name="_token" value="{{ csrf_token() }}">
   <div class="form-group{{ $errors->has('special_notes') ? ' has-error' : '' }}">
-  	<label class="control-label"> Comments on declining Presentation </label>
+  	<label class="control-label">
+    Comments on declining Presentation </label>
 
   	<div>
   		<textarea special_notes="text" row="3" class="form-control"
@@ -21,4 +21,4 @@
     </div>
   </div>
 </form>
-@stop
+</div>
