@@ -12,15 +12,15 @@ Presentations
 
         @forelse($course->presentations as $index=>$p)
             <div class="row ">
-                <div class="col-lg-9 col-md-9 col-sm-9 ">
+                <div class="col-lg-8 col-md-8 col-sm-8 ">
                     <h4>
                         <a data-toggle="collapse"
-                            href="#{{$index}}" aria-expanded="false"
+                            href="#{{$index . $p->id}}" aria-expanded="false"
                             aria-controls="details">
                             {{$p['title']}}
                         </a>
                     </h4>
-                    <div id="{{$index}}" class="collapse">
+                    <div id="{{$index . $p->id}}" class="collapse">
                         <p>
                             <b>Professor:</b> {{ $p['professor_name'] }}
                         </p>
@@ -35,13 +35,14 @@ Presentations
                         <p>
                             <b>Abstract:</b> {{$p['abstract']}}
                         </p>
-                        <p>
-                            <a href="{{ route('presentation.edit', $p['id'])}}"
-                                class="btn btn-default">
-                                Edit this presentation
-                            </a>
-                        </p>
                     </div>
+                </div>
+
+                <div class="col-lg-1 col-md-1 col-sm-1 text-center">
+                    <a href="{{ route('presentation.edit', $p['id'])}}"
+                        class="btn btn-default">
+                        Edit
+                    </a>
                 </div>
 
                 <div class="col-lg-1 col-md-1 col-sm-1 text-center">
