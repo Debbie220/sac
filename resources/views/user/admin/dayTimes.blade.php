@@ -3,7 +3,7 @@
 
   <div class="col-md-1 button">
     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-center">
-        <a class="btn btn-default" id="button" onclick="enable(); addDay();">
+        <a class="btn btn-default" id="button" onclick="enable();addDay();">
             Add a Day
         </a>
     </div>
