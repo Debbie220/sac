@@ -240,8 +240,38 @@ class PresentationsController extends Controller
       JavaScript::put([
         'timeslots' => $timeslots
       ]);
+
+      //Possible hours for creating a new timeslot
+      $start = "00:00";
+      $end = "23:00";
+      $hours=[];
+      $tStart = strtotime($start);
+      $tEnd = strtotime($end);
+      $tNow = $tStart;
+      $i=0;
+      while($tNow <= $tEnd){
+        //echo date("H:i",$tNow)."\n";
+        $hours[$i] = date("H:i", $tNow)."\n";
+        $tNow = strtotime('+60 minutes',$tNow);
+        $i = $i + 1;
+      }
+      //Possible minutes for creating a new timeslot
+      $start = "00:00";
+      $end = "00:59";
+      $minutes=[];
+      $tStart = strtotime($start);
+      $tEnd = strtotime($end);
+      $tNow = $tStart;
+      $i=0;
+      while($tNow <= $tEnd){
+        //echo date("H:i",$tNow)."\n";
+        $minutes[$i] = date("H:i", $tNow)."\n";
+        $tNow = strtotime('+1 minutes',$tNow);
+        $i = $i + 1;
+      }
+
       return view('presentations.schedule', compact('presentations',
-      'rooms','display_room', 'timeslots', 'days'));
+      'rooms','display_room', 'timeslots', 'days', 'hours', 'minutes'));
     }
 
     public function update_schedule($display_room = null){
@@ -270,6 +300,19 @@ class PresentationsController extends Controller
 
     public function deleteTime($display_room, $id){
       Timeslot::destroy($id);
+      return redirect()->route('presentation.schedule', compact('display_room'));
+    }
+
+    public function addTime($display_room){
+      $formvalues = Input::all();
+      $timeslot= new Timeslot;
+      $timeslot->day = $formvalues['day'];
+      $timeslot->room_code = $display_room;
+      $conference = Conference::orderBy('id','desc')->first();
+      $timeslot->conference_id = $conference->id;
+      $time = strtotime($formvalues['minute']) + strtotime($formvalues['hour']);
+      $timeslot->time = date('H:i', $time);
+      $timeslot->save();
       return redirect()->route('presentation.schedule', compact('display_room'));
     }
 }

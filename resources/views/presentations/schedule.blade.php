@@ -21,12 +21,12 @@
   </div>
 </form>
 
-<form method="POST" action="{{ route('presentation.book',
+<form method="POST" action="{{ route('add_time',
                           ['display_room' => $display_room]) }}">
 {{ csrf_field() }}
   <div class="row">
-    <div class="col-md-8"></div>
-    <div class="col-md-4">
+    <div class="col-md-6"></div>
+    <div class="col-md-6">
       @include('presentations._add_timeslot')
     </div>
   </div>
@@ -51,6 +51,9 @@
 
   });
 
+  function addTime(){
+    $("#newTimeForms").removeClass("hidden");
+  }
 
   </script>
 @endpush
