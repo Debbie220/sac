@@ -232,10 +232,12 @@ class PresentationsController extends Controller
       $presentations = Presentation::where('status', 'A')->get();
       $conference = Conference::orderBy('id','desc')->first();
       $timeslots = Timeslot::where('conference_id', $conference->id)->
-                      where('room_code', $display_room)->get();
+                      where('room_code', $display_room)->
+                      orderBy('time')->get();
       $rooms = Timeslot::where('conference_id',$conference->id)->
           select('room_code')->distinct()->get();
-      $days = Timeslot::select('day')->distinct()->get();
+      $days = Timeslot::where('conference_id', $conference->id)->
+          select('day')->distinct()->get();
 
       JavaScript::put([
         'timeslots' => $timeslots
