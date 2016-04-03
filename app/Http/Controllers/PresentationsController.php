@@ -235,12 +235,13 @@ class PresentationsController extends Controller
                       where('room_code', $display_room)->get();
       $rooms = Timeslot::where('conference_id',$conference->id)->
           select('room_code')->distinct()->get();
+      $days = Timeslot::select('day')->distinct()->get();
 
       JavaScript::put([
         'timeslots' => $timeslots
       ]);
       return view('presentations.schedule', compact('presentations',
-      'rooms','display_room', 'timeslots'));
+      'rooms','display_room', 'timeslots', 'days'));
     }
 
     public function update_schedule($display_room = null){
@@ -262,7 +263,6 @@ class PresentationsController extends Controller
               $presentation->save();
               }
             }
-
         }
       }
     return redirect()->route('presentation.schedule', compact('display_room'));

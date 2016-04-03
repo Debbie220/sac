@@ -18,7 +18,7 @@ class AdminController extends Controller
     public function __construct(){
       $this->middleware('admin');
     }
-    
+
     public function make_conference(){
       $days =[1,2,3,4,5];
       $start = "00:00";
@@ -68,7 +68,6 @@ class AdminController extends Controller
             $timeslot->conference_id = $conference->id;
             $timeslot->time = $time;
             $timeslot->save();
-
           }
         }
       }
