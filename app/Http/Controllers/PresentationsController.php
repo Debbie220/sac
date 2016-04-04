@@ -3,17 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Auth;
+use DB;
 
 use App\Http\Requests\PresentationRequest;
 
 use App\Course;
 use App\Presentation;
+use App\Timeslot;
 use App\PresentationType;
+use App\Conference;
+use JavaScript;
 
 class PresentationsController extends Controller
 {
@@ -30,12 +35,11 @@ class PresentationsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $presentations = Presentation::orderBy('updated_at','desc')->get();
-        $presentation_types = PresentationType::all()->toArray();
-        // Add one value to make the id match the position in the array
-        array_unshift($presentation_types, '');
+        $presentations = Presentation::orderBy('updated_at','desc')->
+            orderBy('course_id')->paginate(10);
+
         return view('presentations.index',
-            compact('presentations', 'presentation_types'));
+            compact('presentations'));
     }
 
     /**
@@ -45,9 +49,8 @@ class PresentationsController extends Controller
      */
     public function create(){
         $presentation = new Presentation();
-        $presentation->type = -1;
+        $presentation->type = null;
         $presentation->course = null;
-        $presentation = $this->setOwner($presentation);
         return $this->prepare_form($presentation, 'create');
     }
 
@@ -60,12 +63,27 @@ class PresentationsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(PresentationRequest $request){
-        $presentation = new Presentation($request->all());
-        $presentation = $this->setOwner($presentation);
+        $fields = $request->all();
+        $students = $fields['student_name'];
+        unset($fields['student_name']);
+        $user = Auth::user();
 
-        $presentation->save();
-        flash()->success("Presentation saved. Don't forget to submit it to SAC coodinator");
-        return redirect()->route('user.show', Auth::user());
+        $presentation = new Presentation($fields);
+        $presentation->owner = $user->id;
+        if($user->is_admin()){
+            $presentation->status = "A";
+        }else {
+            $presentation->status = "S";
+        }
+
+        if($presentation->save()){
+            $this->save_students($students, $presentation->id);
+            flash()->success("Presentation saved.");
+        } else {
+            flash()->error("Presentation couldn't be saved");
+        }
+
+        return redirect()->route('user.show', $user);
     }
 
 
@@ -78,6 +96,41 @@ class PresentationsController extends Controller
     public function edit($id){
         $presentation = Presentation::findOrFail($id);
         return $this->prepare_form($presentation, 'edit');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request\PresentationRequest  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(PresentationRequest $request, $id){
+        $presentation = Presentation::findOrFail($id);
+
+        $this->authorize('modify', $presentation);
+
+        $fields = $request->all();
+        $students = $fields['student_name'];
+        unset($fields['student_name']);
+        $user = Auth::user();
+
+        DB::table('presentation_students')->
+            where('presentation_id', '=', $id)->delete();
+
+        $this->save_students($students, $id);
+
+        if($user->is_admin()){
+            $presentation->status = "A";
+            $presentation->update($fields);
+            flash()->success("Presentation saved!");
+        } else {
+            $presentation->status = "S";
+            $presentation->update($fields);
+            flash()->overlay("Don't forget to resubmit this update"
+                 ." to SAC coordinator", "Success!");
+        }
+        return redirect()->route('user.show', Auth::user());
     }
 
     /**
@@ -99,26 +152,6 @@ class PresentationsController extends Controller
         return redirect()->route('user.show', Auth::user());
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request\PresentationRequest  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(PresentationRequest $request, $id){
-        $presentation = Presentation::findOrFail($id);
-
-        $this->authorize('modify', $presentation);
-
-        $presentation->submitted = "S";
-        $presentation->update($request->all());
-
-        flash()->overlay("Don't forget to resubmit this update"
-             ." to SAC coordinator", "Success!");
-
-        return redirect()->route('user.show', Auth::user());
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -151,10 +184,10 @@ class PresentationsController extends Controller
     }
 
     public function save_comment($id, Request $request){
-        $comments=$request->all();
-        $presentation= Presentation::findOrFail($id);
-        $presentation->status='D';
-        $presentation->comments=$comments['comments'];
+        $comments = $request->all();
+        $presentation = Presentation::findOrFail($id);
+        $presentation->status = 'D';
+        $presentation->comments = $comments['comments'];
         $presentation->save();
         flash()->success('Your comments have being saved');
         return redirect()->route('presentation.pending');
@@ -165,31 +198,73 @@ class PresentationsController extends Controller
         return view('presentations.pending')->with('presentations', $presentations);
     }
 
+    private function save_students($students, $id){
+        foreach ($students as $student) {
+            try{
+                DB::table('presentation_students')->insert(
+                    ['presentation_id' => $id,
+                    'student_name' => $student]);
+            } catch(\Illuminate\Database\QueryException $e){
+                flash()->error('This student is already
+                    registered for this presentation');
+            }
+        }
+    }
+
     private function prepare_form($presentation, $action){
         $user = Auth::user();
 
-        if(Auth::user()->is_professor())
-            $courses = $user->courses;
+        if($user->is_professor())
+            $courses = $user->courses()->where('offered_this_semester', true)->get();
         else
-            $courses = Course::orderBy('subject_code', 'asc')->get();
+            $courses = Course::where('offered_this_semester', true)->
+                orderBy('subject_code', 'asc')->
+                orderBy('number')->get();
 
         $presentation_types = PresentationType::all();
+
+        $students = $presentation->students();
         return view('presentations.'.$action,
-            compact('courses', 'presentation_types', 'presentation'));
+            compact('courses', 'presentation_types', 'presentation', 'students'));
     }
 
+    public function show_schedule($display_room = null){
+      $presentations = Presentation::where('status', 'A')->get();
+      $conference = Conference::orderBy('id','desc')->first();
+      $timeslots = Timeslot::where('conference_id', $conference->id)->
+                      where('room_code', $display_room)->get();
+      $rooms = Timeslot::where('conference_id',$conference->id)->
+          select('room_code')->distinct()->get();
 
-    private function setOwner($presentation){
-        $user = Auth::user();
+      JavaScript::put([
+        'timeslots' => $timeslots
+      ]);
+      return view('presentations.schedule', compact('presentations',
+      'rooms','display_room', 'timeslots'));
+    }
 
-        if($user->is_student()){
-            $presentation->student_name = $user->name;
-        } else if($user->is_professor()){
-            $presentation->professor_name = $user->name;
+    public function update_schedule($display_room = null){
+      if (Input::has('timeslots')){
+        $formvalues = Input::all();
+        $timeslots = $formvalues['timeslots'];
+        foreach ($timeslots as $timeslot){
+          if (Input::has($timeslot)){
+            foreach ($formvalues[$timeslot] as $identifier){
+              $presentation = Presentation::findOrFail(substr($identifier,-1));
+              $presentation->timeslot = $timeslot;
+              $presentation->save();
+            }
+          }
+          if (Input::has('drag-elements')){
+            foreach ($formvalues['drag-elements'] as $identifier){
+              $presentation = Presentation::findOrFail(substr($identifier,-1));
+              $presentation->timeslot = null;
+              $presentation->save();
+              }
+            }
+
         }
-        $presentation->owner = $user->id;
-        $presentation->status = "S";
-        return $presentation;
+      }
+    return redirect()->route('presentation.schedule', compact('display_room'));
     }
-
 }

@@ -18,12 +18,17 @@ elixir(function(mix) {
   var bootstrapPath = 'node_modules/bootstrap-sass/assets';
   mix.sass('app.scss')
     .copy(bootstrapPath + '/fonts', 'public/fonts');
-  
+
   mix.scripts(['jquery.min.js','bootstrap.min.js'])
-    .scripts('react-select.min.js', 'public/js/react-select.js')
-    .scriptsIn('resources/assets/js/select-dep', 'public/js/select-dependencies.js');
-  
-  mix.copy('resources/assets/css/react-select.min.css', 'public/css/react-select.css');
+    .scripts(['dragula.min.js', 'drag.js'], 'public/js/dragula.js');
+
+  mix.scripts('add_student.js', 'public/js/add_student.js')
+
+
 
   mix.version(['public/css/app.css']);
+
+  mix.styles(
+    ['dragula.css', 'drag.css'],
+    'public/css/dragula.css');
 });
