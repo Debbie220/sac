@@ -23,7 +23,7 @@ Presentations
                         <b>Professor:</b> {{ $p['professor_name'] }}
                     </p>
                     <p>
-                        <b>Students:</b> 
+                        <b>Students:</b>
                         <ul class="list-unstyled">
                         @foreach($p->students() as $student)
                             <li>{{ $student->student_name }}</li>
@@ -55,13 +55,13 @@ Presentations
             <div class="col-lg-1 col-md-1 col-sm-1 ">
                 <span class = "
                     @if($p->status == 'S')
-                        alert-warning
+                        label label-warning
                     @elseif($p->status == 'D')
-                        alert-danger
+                        label label-danger
                     @elseif($p->status == 'A')
-                        alert-success
+                        label label-success
                     @else
-                        alert-info
+                        label label-info
                     @endif">
                     {{ $p->status()->get()->first()->description }}
                 </span>
