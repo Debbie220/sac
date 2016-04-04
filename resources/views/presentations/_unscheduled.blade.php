@@ -5,6 +5,9 @@
         <b>{{$student->student_name}}, </b>
       @endforeach
       <i>{{$p['title']}}</i>
+      @if ($p['our_nominee'])
+        <b>*</b>
+      @endif
     </div>
   @endif
 @endforeach
