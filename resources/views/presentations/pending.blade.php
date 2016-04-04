@@ -79,5 +79,6 @@ Pending Presentations
     <br>
 @stop
 
-
+@push('scripts')
 <script src="{{ asset('js/commenting.js') }}"></script>
+@endpush
