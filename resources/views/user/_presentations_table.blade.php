@@ -32,15 +32,15 @@
         </div>
 
         <div class="col-lg-1 col-md-1 col-sm-1 ">
-            <span class = "
+            <span class = "label
                 @if($p->status == 'S')
-                    alert-warning
+                    label-warning
                 @elseif($p->status == 'D')
-                    alert-danger
+                    label-danger
                 @elseif($p->status == 'A')
-                    alert-success
+                    label-success
                 @else
-                    alert-info
+                    label-info
                 @endif">
                 {{ $p->status()->get()->first()->description }}
             </span>

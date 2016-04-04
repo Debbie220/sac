@@ -34,8 +34,10 @@
 
 #drag-elements {
   display: block;
-  background-color: #E8E8E8;
-  border-radius: 5px;
+  background-color: #F5F5F5;
+  border: 1px solid #E3E3E3;
+  border-radius: 4px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05) inset;
   min-height: 50px;
   margin: 0 auto;
   padding: 1em;
@@ -51,7 +53,7 @@
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
   border-radius: 5px;
   border: 2px solid #ececec;
-  background: #F7F7F7;
+  background-color: #FFFFFF;
   transition: all .5s ease;
 }
 
@@ -82,12 +84,12 @@
   transition: all .5s;
   text-align: center;
   float: left;
-  padding: 2px;
+  padding: 1em;
   margin: 3px 3px 3px 3px;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
   border-radius: 5px;
   border: 2px solid skyblue;
-  background: #F7F7F7;
+  background: #FFFFFF;
   transition: all .5s ease;
 }
 

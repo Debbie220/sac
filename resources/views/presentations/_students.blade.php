@@ -33,8 +33,8 @@
             </div>
 
             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-center">
-                <a class="btn btn-default" href="#" onclick="addStudent();">
-                    <i class="fa fa-plus"></i>
+                <a class="btn btn-default" onclick="addStudent();">
+                    <i class="fa fa-plus"></i>Add Student
                 </a>
             </div>
         </div>
@@ -51,12 +51,13 @@
     </div>
 
     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-center">
-        <a class="btn btn-default" href="#" onclick="addStudent();">
-            <i class="fa fa-plus"></i>
+        <a class="btn btn-default" onclick="addStudent();">
+            <i class="fa fa-plus"></i> Add Student
         </a>
     </div>
 </div>
 
 @push('scripts')
 <script src="{{ asset('js/add_student.js') }}"></script>
+
 @endpush

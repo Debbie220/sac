@@ -18,6 +18,7 @@ use App\Presentation;
 use App\Timeslot;
 use App\PresentationType;
 use App\Conference;
+use App\User;
 use JavaScript;
 
 class PresentationsController extends Controller
@@ -237,15 +238,48 @@ class PresentationsController extends Controller
       $presentations = Presentation::where('status', 'A')->get();
       $conference = Conference::orderBy('id','desc')->first();
       $timeslots = Timeslot::where('conference_id', $conference->id)->
-                      where('room_code', $display_room)->get();
+                      where('room_code', $display_room)->
+                      orderBy('time')->get();
       $rooms = Timeslot::where('conference_id',$conference->id)->
           select('room_code')->distinct()->get();
+      $days = Timeslot::where('conference_id', $conference->id)->
+          select('day')->distinct()->get();
 
       JavaScript::put([
         'timeslots' => $timeslots
       ]);
+
+      //Possible hours for creating a new timeslot
+      $start = "00:00";
+      $end = "23:00";
+      $hours=[];
+      $tStart = strtotime($start);
+      $tEnd = strtotime($end);
+      $tNow = $tStart;
+      $i=0;
+      while($tNow <= $tEnd){
+        //echo date("H:i",$tNow)."\n";
+        $hours[$i] = date("H:i", $tNow)."\n";
+        $tNow = strtotime('+60 minutes',$tNow);
+        $i = $i + 1;
+      }
+      //Possible minutes for creating a new timeslot
+      $start = "00:00";
+      $end = "00:59";
+      $minutes=[];
+      $tStart = strtotime($start);
+      $tEnd = strtotime($end);
+      $tNow = $tStart;
+      $i=0;
+      while($tNow <= $tEnd){
+        //echo date("H:i",$tNow)."\n";
+        $minutes[$i] = date("H:i", $tNow)."\n";
+        $tNow = strtotime('+1 minutes',$tNow);
+        $i = $i + 1;
+      }
+
       return view('presentations.schedule', compact('presentations',
-      'rooms','display_room', 'timeslots'));
+      'rooms','display_room', 'timeslots', 'days', 'hours', 'minutes'));
     }
 
     public function update_schedule($display_room = null){
@@ -255,7 +289,7 @@ class PresentationsController extends Controller
         foreach ($timeslots as $timeslot){
           if (Input::has($timeslot)){
             foreach ($formvalues[$timeslot] as $identifier){
-              $presentation = Presentation::findOrFail(substr($identifier,-1));
+              $presentation = Presentation::findOrFail(explode('_', $identifier)[1]);
               $presentation->timeslot = $timeslot;
               $presentation->save();
             }
@@ -267,9 +301,26 @@ class PresentationsController extends Controller
               $presentation->save();
               }
             }
-
         }
       }
     return redirect()->route('presentation.schedule', compact('display_room'));
+    }
+
+    public function deleteTime($display_room, $id){
+      Timeslot::destroy($id);
+      return redirect()->route('presentation.schedule', compact('display_room'));
+    }
+
+    public function addTime($display_room){
+      $formvalues = Input::all();
+      $timeslot= new Timeslot;
+      $timeslot->day = $formvalues['day'];
+      $timeslot->room_code = $display_room;
+      $conference = Conference::orderBy('id','desc')->first();
+      $timeslot->conference_id = $conference->id;
+      $time = strtotime($formvalues['minute']) + strtotime($formvalues['hour']);
+      $timeslot->time = date('H:i', $time);
+      $timeslot->save();
+      return redirect()->route('presentation.schedule', compact('display_room'));
     }
 }

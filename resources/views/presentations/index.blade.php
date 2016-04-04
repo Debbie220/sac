@@ -10,6 +10,7 @@ Presentations
 @stop
 
 @section('admin_content')
+
     @forelse($courses as $course)
         <h3>
             {{ $course->toString() }}
@@ -30,7 +31,7 @@ Presentations
                             <b>Professor:</b> {{ $p['professor_name'] }}
                         </p>
                         <p>
-                            <b>Students:</b> 
+                            <b>Students:</b>
                             <ul class="list-unstyled">
                             @foreach($p->students() as $student)
                                 <li>{{ $student->student_name }}</li>
@@ -56,24 +57,20 @@ Presentations
                     @endif
                 </div>
 
-                <div class="col-lg-1 col-md-1 col-sm-1 text-center">
-                    {{ $p->type()->get()->first()->description}}
-                </div>
-
-                <div class="col-lg-1 col-md-1 col-sm-1 ">
-                    <span class = "
-                        @if($p->status == 'S')
-                            alert-warning
-                        @elseif($p->status == 'D')
-                            alert-danger
-                        @elseif($p->status == 'A')
-                            alert-success
-                        @else
-                            alert-info
-                        @endif">
-                        {{ $p->status()->get()->first()->description }}
-                    </span>
-                </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 ">
+                <span class = "
+                    @if($p->status == 'S')
+                        label label-warning
+                    @elseif($p->status == 'D')
+                        label label-danger
+                    @elseif($p->status == 'A')
+                        label label-success
+                    @else
+                        label label-info
+                    @endif">
+                    {{ $p->status()->get()->first()->description }}
+                </span>
+              </div>
             </div>
             <br>
         @empty
