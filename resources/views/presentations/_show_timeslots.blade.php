@@ -28,10 +28,11 @@
             @endforeach
           </div>
         </div>
-        <div class="col-md-1">
-          <a href="{{route('delete_time', ['display_room' => $display_room,'id' => $timeslot->id, ])}}">
+        <!-- <div class="col-md-1">
+          <a href="{{route('delete_time', 
+            ['display_room' => $display_room,'id' => $timeslot->id, ])}}">
                 <i class="fa fa-trash-o"></i></a>
-        </div>
+        </div> -->
       </div>
       <input type='text' name='timeslots[]' value="{{ $timeslot->id }}"
           class='hidden'>
