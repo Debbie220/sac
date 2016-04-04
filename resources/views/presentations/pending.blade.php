@@ -7,12 +7,13 @@ Pending Presentations
 @section('admin_content')
     @forelse($presentations as $index=>$p)
         <div class="row ">
-            <div class="col-lg-6 col-md-6 col-sm-6 ">
+            <div id="title" class="col-lg-6 col-md-6 col-sm-6 ">
                 <h4>
                     <a data-toggle="collapse"
                         href="#{{$index}}" aria-expanded="false"
                         aria-controls="details">
                         {{$p['title']}}
+                        @include('presentations.comments')
                     </a>
                 </h4>
                 <div id="{{$index}}" class="collapse">
@@ -23,7 +24,7 @@ Pending Presentations
                         <b>Professor:</b> {{ $p['professor_name'] }}
                     </p>
                     <p>
-                        <b>Students:</b> 
+                        <b>Students:</b>
                         <ul class="list-unstyled">
                         @foreach($p->students() as $student)
                             <li>{{ $student->student_name }}</li>
@@ -63,14 +64,9 @@ Pending Presentations
                 </form>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2 text-center">
-                <form action="{{ route('presentation.decline', $p->id)}}"
-                    role='form' method="POST">
-                    {{ csrf_field() }}
-                    {{ method_field('PATCH') }}
-                    <button type="submit" class="btn btn-default">
-                       <i class="fa fa-thumbs-down"></i>Decline
-                    </button>
-                </form>
+                  <button type="button" class="btn btn-default" onclick="comments();">
+                    <i class="fa fa-thumbs-down"></i>Decline
+                 </button>
             </div>
         </div>
         <br>
@@ -82,3 +78,7 @@ Pending Presentations
     <i class="fa fa-star fa-lg"></i> = OUR Nominee
     <br>
 @stop
+
+@push('scripts')
+<script src="{{ asset('js/commenting.js') }}"></script>
+@endpush

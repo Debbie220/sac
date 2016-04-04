@@ -57,6 +57,7 @@
     </div>
 </div>
 
-@section('scripts')
+@push('scripts')
 <script src="{{ asset('js/add_student.js') }}"></script>
-@stop
+
+@endpush

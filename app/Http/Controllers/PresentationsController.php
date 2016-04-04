@@ -36,11 +36,16 @@ class PresentationsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $presentations = Presentation::orderBy('updated_at','desc')->
-            orderBy('course_id')->paginate(10);
+
+        /*
+        This fetches the courses with presentations and iterate through them
+        on the html page. It's used to divide the presentations by course.
+        */
+        $courses = Course::where('offered_this_semester',true)->
+            has('presentations')->paginate(5);
 
         return view('presentations.index',
-            compact('presentations'));
+            compact('courses'));
     }
 
     /**
