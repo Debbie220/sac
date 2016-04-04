@@ -10,12 +10,12 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic|Abel" rel="stylesheet" type="text/css">
-
-
+    @stack('style')
     <title> SAC - @yield('title')</title>
   </head>
 
   <body>
+    <script type="text/javascript" src="{{ URL::asset('js/drag.js') }}"></script>
     @include('basePages.uofabar')
 
     @include('flash::message')
@@ -28,8 +28,8 @@
 
     <script src="{{ asset('js/all.js') }}"></script>
 
-    @yield('scripts')
-    
+    @stack('scripts')
+
     <script>
         $('#flash-overlay-modal').modal();
     </script>

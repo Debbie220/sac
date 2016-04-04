@@ -17,3 +17,7 @@ by running:
 Compile the scss files into css running:
 
   `gulp`
+
+If drag and drop is not working, install it by runnning:
+
+  `npm install dragula --save`
