@@ -10,7 +10,7 @@
                 value="{{ $students[0]->student_name }}"
             @endif
             >
-            
+
     </div>
 
     <div class="col-md-1 checkbox">
@@ -57,6 +57,6 @@
     </div>
 </div>
 
-@section('scripts')
+@push('scripts')
 <script src="{{ asset('js/add_student.js') }}"></script>
-@stop
+@endpush
