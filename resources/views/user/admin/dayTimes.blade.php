@@ -87,8 +87,6 @@
   </div>
 </div>
 
-@section('scripts')
-@section('scripts')
+@push('scripts')
 <script src="{{ asset('js/add_day.js') }}"></script>
-@stop
-@stop
+@endpush

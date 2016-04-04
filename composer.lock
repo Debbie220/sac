@@ -947,7 +947,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/e87a786e3ae12a25cf78a71bb07b4b384bfaa83a",
                 "reference": "e87a786e3ae12a25cf78a71bb07b4b384bfaa83a",
->>>>>>> drag_and_drop
                 "shasum": ""
             },
             "require": {
@@ -1017,11 +1016,8 @@
                 "sftp",
                 "storage"
             ],
-<<<<<<< HEAD
             "time": "2016-03-07 21:01:43"
-=======
-            "time": "2016-03-14 21:54:11"
->>>>>>> drag_and_drop
+
         },
         {
             "name": "monolog/monolog",
