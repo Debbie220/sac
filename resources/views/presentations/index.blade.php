@@ -4,6 +4,11 @@
 Presentations
 @stop
 
+@section('add_object')
+    <a href="{{ route('presentation.pending')}}" class="btn btn-default">
+    Pending Presentations</a>
+@stop
+
 @section('admin_content')
     @forelse($courses as $course)
         <h3>
