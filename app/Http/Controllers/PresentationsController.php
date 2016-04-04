@@ -284,7 +284,7 @@ class PresentationsController extends Controller
         foreach ($timeslots as $timeslot){
           if (Input::has($timeslot)){
             foreach ($formvalues[$timeslot] as $identifier){
-              $presentation = Presentation::findOrFail(substr($identifier,-1));
+              $presentation = Presentation::findOrFail(explode('_', $identifier)[1]);
               $presentation->timeslot = $timeslot;
               $presentation->save();
             }
