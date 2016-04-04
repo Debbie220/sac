@@ -18,6 +18,7 @@ use App\Presentation;
 use App\Timeslot;
 use App\PresentationType;
 use App\Conference;
+use App\User;
 use JavaScript;
 
 class PresentationsController extends Controller
