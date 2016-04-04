@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubjectsTable extends Migration
+class AddTimeslotToPresentation extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,9 @@ class CreateSubjectsTable extends Migration
      */
     public function up()
     {
-        Schema::create('subjects', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
+        Schema::table('presentations', function (Blueprint $table) {
+          $table->integer("timeslot")->nullable();
 
-            $table->string('code', 5);
-            $table->string('name', 100);
-
-            $table->primary('code');
-            $table->timestamps();
         });
     }
 
@@ -30,6 +25,8 @@ class CreateSubjectsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('subjects');
+        Schema::table('presentations', function (Blueprint $table) {
+          $table->dropColumn("timeslot");
+        });
     }
 }

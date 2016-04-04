@@ -18,12 +18,7 @@ class AdminController extends Controller
     public function __construct(){
       $this->middleware('admin');
     }
-
-    public function view_courses(){
-      $courses = Course::all();
-      return view('courses.index')->with('courses', $courses);
-    }
-
+    
     public function make_conference(){
       $days =[1,2,3,4,5];
       $numDays=1;

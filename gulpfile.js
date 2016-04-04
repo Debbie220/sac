@@ -20,9 +20,16 @@ elixir(function(mix) {
     .copy(bootstrapPath + '/fonts', 'public/fonts');
 
   mix.scripts(['jquery.min.js','bootstrap.min.js'])
+    .scripts(['dragula.min.js', 'drag.js'], 'public/js/dragula.js');
+
   mix.scripts('add_student.js', 'public/js/add_student.js')
   mix.scripts('add_day.js', 'public/js/add_day.js')
   mix.scripts('commenting.js', 'public/js/commenting.js')
-  
+
+
   mix.version(['public/css/app.css']);
+
+  mix.styles(
+    ['dragula.css', 'drag.css'],
+    'public/css/dragula.css');
 });

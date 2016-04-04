@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -14,7 +15,10 @@ use App\Http\Requests\PresentationRequest;
 
 use App\Course;
 use App\Presentation;
+use App\Timeslot;
 use App\PresentationType;
+use App\Conference;
+use JavaScript;
 
 class PresentationsController extends Controller
 {
@@ -31,7 +35,8 @@ class PresentationsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $presentations = Presentation::orderBy('updated_at','desc')->paginate(10);
+        $presentations = Presentation::orderBy('updated_at','desc')->
+            orderBy('course_id')->paginate(10);
 
         return view('presentations.index',
             compact('presentations'));
@@ -65,12 +70,15 @@ class PresentationsController extends Controller
 
         $presentation = new Presentation($fields);
         $presentation->owner = $user->id;
-        $presentation->status = "S";
+        if($user->is_admin()){
+            $presentation->status = "A";
+        }else {
+            $presentation->status = "S";
+        }
 
         if($presentation->save()){
             $this->save_students($students, $presentation->id);
-            flash()->success("Presentation saved. 
-                Don't forget to submit it to SAC coodinator");
+            flash()->success("Presentation saved.");
         } else {
             flash()->error("Presentation couldn't be saved");
         }
@@ -197,7 +205,7 @@ class PresentationsController extends Controller
                     ['presentation_id' => $id,
                     'student_name' => $student]);
             } catch(\Illuminate\Database\QueryException $e){
-                flash()->error('This student is already 
+                flash()->error('This student is already
                     registered for this presentation');
             }
         }
@@ -207,9 +215,11 @@ class PresentationsController extends Controller
         $user = Auth::user();
 
         if($user->is_professor())
-            $courses = $user->courses;
+            $courses = $user->courses()->where('offered_this_semester', true)->get();
         else
-            $courses = Course::orderBy('subject_code', 'asc')->get();
+            $courses = Course::where('offered_this_semester', true)->
+                orderBy('subject_code', 'asc')->
+                orderBy('number')->get();
 
         $presentation_types = PresentationType::all();
 
@@ -218,4 +228,43 @@ class PresentationsController extends Controller
             compact('courses', 'presentation_types', 'presentation', 'students'));
     }
 
+    public function show_schedule($display_room = null){
+      $presentations = Presentation::where('status', 'A')->get();
+      $conference = Conference::orderBy('id','desc')->first();
+      $timeslots = Timeslot::where('conference_id', $conference->id)->
+                      where('room_code', $display_room)->get();
+      $rooms = Timeslot::where('conference_id',$conference->id)->
+          select('room_code')->distinct()->get();
+
+      JavaScript::put([
+        'timeslots' => $timeslots
+      ]);
+      return view('presentations.schedule', compact('presentations',
+      'rooms','display_room', 'timeslots'));
+    }
+
+    public function update_schedule($display_room = null){
+      if (Input::has('timeslots')){
+        $formvalues = Input::all();
+        $timeslots = $formvalues['timeslots'];
+        foreach ($timeslots as $timeslot){
+          if (Input::has($timeslot)){
+            foreach ($formvalues[$timeslot] as $identifier){
+              $presentation = Presentation::findOrFail(substr($identifier,-1));
+              $presentation->timeslot = $timeslot;
+              $presentation->save();
+            }
+          }
+          if (Input::has('drag-elements')){
+            foreach ($formvalues['drag-elements'] as $identifier){
+              $presentation = Presentation::findOrFail(substr($identifier,-1));
+              $presentation->timeslot = null;
+              $presentation->save();
+              }
+            }
+
+        }
+      }
+    return redirect()->route('presentation.schedule', compact('display_room'));
+    }
 }

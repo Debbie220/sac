@@ -1,55 +1,83 @@
 @extends('user.admin.basepage')
 
+@section('header')
+Pending Presentations
+@stop
+
 @section('admin_content')
-<h1> Presentations </h1>
-<div class="table-responsive">
-  <table class="table">
-    <tr class="row">
-      <th class="col-lg-1 col-md-6 col-sm-2 text-center">Title</th>
-      <th class="col-lg-1 col-md-6 col-sm-2 text-center">Student(s)</th>
-      <th class="col-lg-1 col-md-6 col-sm-2 text-center"></th>
-      <th class="col-lg-1 col-md-6 col-sm-2 text-center"></th>
-
-    </tr>
-      @foreach($presentations as $p)
-      <tr class="row">
-        <td id="title" class="text-center">
-          <a href="{!! route('presentation.edit', $p->id) !!}">
-          {{$p->title}} </a>
-        </td>
-        <td class="text-center">
-          <ul class="list-unstyled">
-                    @foreach($p->students() as $student)
-                        <li>{{ $student->student_name }}</li>
-                    @endforeach
-                    </ul>
-        </td>
-        <td class="text-center">
-
-          <form action="{{ route('presentation.approve', $p->id)}}" role='form' method="POST">
-            {{ csrf_field() }}
-          	{{ method_field('PATCH') }}
-            <div class="form-group">
-                  <button type="submit" class="btn btn-default">
-                     <i class="fa fa-thumbs-up"></i>Approve
-                  </button>
+    @forelse($presentations as $index=>$p)
+        <div class="row ">
+            <div id="title" class="col-lg-6 col-md-6 col-sm-6 ">
+                <h4>
+                    <a data-toggle="collapse"
+                        href="#{{$index}}" aria-expanded="false"
+                        aria-controls="details">
+                        {{$p['title']}}
+                        @include('presentations.comments')
+                    </a>
+                </h4>
+                <div id="{{$index}}" class="collapse">
+                    <p>
+                        <b>Course:</b> {{ $p->course()->get()->first()->toString() }}
+                    </p>
+                    <p>
+                        <b>Professor:</b> {{ $p['professor_name'] }}
+                    </p>
+                    <p>
+                        <b>Students:</b>
+                        <ul class="list-unstyled">
+                        @foreach($p->students() as $student)
+                            <li>{{ $student->student_name }}</li>
+                        @endforeach
+                        </ul>
+                    </p>
+                    <p>
+                        <b>Abstract:</b> {{$p['abstract']}}
+                    </p>
+                    <p>
+                        <a href="{{ route('presentation.edit', $p['id'])}}"
+                            class="btn btn-default">
+                            Edit this presentation
+                        </a>
+                    </p>
+                </div>
             </div>
-          </form>
-        </td>
-        <td class="text-center">
-            <div class="form-group">
+
+            <div class="col-lg-1 col-md-1 col-sm-1 text-center">
+                @if($p['our_nominee'])
+                    <span title="OUR Nominee"><i class="fa fa-star fa-lg"></i></span>
+                @endif
+            </div>
+
+            <div class="col-lg-1 col-md-1 col-sm-1 text-center">
+                {{ $p->type()->get()->first()->description}}
+            </div>
+
+            <div class="col-lg-2 col-md-2 col-sm-2 text-center">
+                <form action="{{ route('presentation.approve', $p->id)}}"
+                    role='form' method="POST">
+                    {{ csrf_field() }}
+                    {{ method_field('PATCH') }}
+                    <button type="submit" class="btn btn-default">
+                        <i class="fa fa-thumbs-up"></i>Approve
+                    </button>
+                </form>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 text-center">
                   <button type="button" class="btn btn-default" onclick="comments();">
-                       <i class="fa fa-thumbs-down"></i>Decline
-                  </button>
+                    <i class="fa fa-thumbs-down"></i>Decline
+                 </button>
             </div>
-        </td>
-      </tr>
-      @endforeach
-  </table>
-</div>
-@include('presentations.comments')
+        </div>
+        <br>
+    @empty
+        <h4>No presentations yet!</h4>
+    @endforelse
+
+    <br>
+    <i class="fa fa-star fa-lg"></i> = OUR Nominee
+    <br>
 @stop
 
-@section('scripts')
+
 <script src="{{ asset('js/commenting.js') }}"></script>
-@stop

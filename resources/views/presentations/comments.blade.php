@@ -1,6 +1,6 @@
 
 <div class="hidden comments">
-<form action="{{ route('presentation.comment', $p->id)}}" method="POST" role='form'>
+<form action="{{ route('presentation.comment', $p['id'])}}" method="POST" role='form'>
   <input type="hidden" name="_token" value="{{ csrf_token() }}">
   <div class="form-group{{ $errors->has('special_notes') ? ' has-error' : '' }}">
   	<label class="control-label">
