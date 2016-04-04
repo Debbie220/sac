@@ -11,10 +11,10 @@
 			@endforeach
 		</select>
 	</div>
-	
+
 	<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-center">
 		<button type="submit" class="btn btn-default" id="add_course">
-			<i class="fa fa-plus"></i>
+			<i class="fa fa-plus"></i> Add Course
 		</button>
 	</div>
 </form>

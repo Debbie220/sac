@@ -10,7 +10,7 @@
                 value="{{ $students[0]->student_name }}"
             @endif
             >
-            
+
     </div>
 
     <div class="col-md-1 checkbox">
@@ -33,8 +33,8 @@
             </div>
 
             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-center">
-                <a class="btn btn-default" href="#" onclick="addStudent();">
-                    <i class="fa fa-plus"></i>
+                <a class="btn btn-default" onclick="addStudent();">
+                    <i class="fa fa-plus"></i>Add Student
                 </a>
             </div>
         </div>
@@ -51,8 +51,8 @@
     </div>
 
     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-center">
-        <a class="btn btn-default" href="#" onclick="addStudent();">
-            <i class="fa fa-plus"></i>
+        <a class="btn btn-default" onclick="addStudent();">
+            <i class="fa fa-plus"></i> Add Student
         </a>
     </div>
 </div>
