@@ -10,8 +10,7 @@
 
   	<div>
   		<input required type="text" class="form-control" name="name"
-  			value="{{ old('name', $user['name']) }}"
-  			{{ Auth::user()->name }} >
+  			value="{{ old('name', $user['name']) }}">
 
   		@if ($errors->has('name'))
   			<span class="help-block">

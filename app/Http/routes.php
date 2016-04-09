@@ -5,8 +5,6 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('update', 'UsersController@update')->name('update');
     Route::auth();
 
-    Route::get('test', 'UsersController@test');
-
     Route::resource('presentation', 'PresentationsController',
         ['except' => 'show']);
     Route::group(['prefix' => 'presentation'], function (){
