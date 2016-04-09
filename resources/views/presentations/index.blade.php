@@ -77,11 +77,12 @@ Presentations
             <h4>No presentations yet!</h4>
         @endforelse
     @empty
-        Start by adding courses to your account.
+        No courses or presentations.
     @endforelse
 
     {{ $courses->links() }}
 
+    <br>
     <small><i class="fa fa-star fa-lg"></i> = OUR Nominee</small>
     <br>
 @stop
