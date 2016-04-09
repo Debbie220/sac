@@ -27,7 +27,7 @@ class CoursesController extends Controller
                 orderBy('subject_code')->orderBy('number')->paginate(10);
         } catch(\ErrorException $e){
             $courses = Course::orderBy('subject_code')->
-                orderBy('number')->paginate(10);
+                orderBy('number')->paginate(25);
         }
         return view('courses.index')->with('courses', $courses);
     }
