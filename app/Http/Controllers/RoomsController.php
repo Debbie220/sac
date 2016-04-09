@@ -26,8 +26,13 @@ class RoomsController extends Controller
     }
 
     public function store(Request $request){
-        Room::create($request->all());
-        flash()->success('Room created!');
+
+        try {
+            Room::create($request->all());
+            flash()->success('Room created!');
+        } catch(\Illuminate\Database\QueryException $e){
+            flash()->error('Room already exists!');
+        }
         return redirect(route('room.index'));
     }
 
