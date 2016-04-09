@@ -27,7 +27,7 @@ class PresentationRequest extends Request
     public function rules()
     {
         $rules =  [
-            'professor_name' => 'required',
+            'professor_name' => 'required|min:6|max:255',
             'course_id' => 'required',
             'title' => 'required',
             'type' => 'required',
