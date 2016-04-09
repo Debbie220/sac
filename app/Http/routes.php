@@ -1,6 +1,8 @@
 <?php
 Route::group(['middleware' => 'web'], function () {
     Route::post('/test', 'StaticPagesController@test')->name('test');
+    Route::get('/test2', 'StaticPagesController@test2')->name('test2');
+
     Route::get('/', 'StaticPagesController@home')->name('home');
     Route::get('edit', 'UsersController@edit')->name('edit');
     Route::post('update', 'UsersController@update')->name('update');
