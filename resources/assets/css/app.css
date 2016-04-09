@@ -12,6 +12,7 @@ html {
 }
 body {
     font-family: 'Abel';
+    font-size: medium;
     margin: 0 0 60px; /* bottom = footer height */
 }
 footer {
