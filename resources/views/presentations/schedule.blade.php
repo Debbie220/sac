@@ -44,7 +44,6 @@
 @endif
 
 @stop
-@include('footer')
 @push('scripts')
   <script src="{{ asset('js/dragula.js') }}"></script>
   <script>
