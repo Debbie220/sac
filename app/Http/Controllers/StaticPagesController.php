@@ -16,4 +16,9 @@ class StaticPagesController extends Controller
             return redirect()->route('user.show', Auth::user());
         return view('static.home');
     }
+
+    public function test(Request $request){
+        print_r(array_keys($request->toArray()));
+        return "success";
+    }
 }
