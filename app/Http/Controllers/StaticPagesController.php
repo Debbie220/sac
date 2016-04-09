@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Auth;
 use \Google_Client;
+use App\User;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -19,6 +20,23 @@ class StaticPagesController extends Controller
     }
 
     public function test(Request $request){
+        $token = $request['id_token'];
+        $user_data = $this->create_gclient($token);
+
+        $user = new User();
+        $user['name'] = $user_data['name'];
+        $user['email'] = $user_data['email'];
+
+        try{
+            $user->save();
+        } catch(\Illuminate\Database\QueryException $e){
+        
+        }
+        flash()->success("Logged in!");
+        return "success";
+    }
+
+    private function create_gclient($token){
         $client_id = '813063530942-30qk2j5pbentenlho080oldb2pi2ljrn.apps.googleusercontent.com';
         $client_secret = 'BRsaasPaO-efqzc7zfC5g6d5';
         $redirect_uri = route('home');
@@ -29,8 +47,7 @@ class StaticPagesController extends Controller
         $client->setRedirectUri($redirect_uri);
         $client->setScopes('email');
 
-        $data = $client->verifyIdToken($request['id_token']);
-        print_r($data->getAttributes());
-        return "success";
+        $data = $client->verifyIdToken($token);
+        return $data->getAttributes()['payload'];
     }
 }
