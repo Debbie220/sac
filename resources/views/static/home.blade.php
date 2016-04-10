@@ -3,8 +3,15 @@
 @section('content')
     <div class="jumbotron">
         <h1> Welcome to the SAC registration system!</h1>
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
     </div>
+
+    <h2>
+        Sign in with your ualberta account and start to manage your presentations for SAC!
+    </h2>
+    <br>
+    <center>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    </center>
 @endsection
 
 @push('scripts')
