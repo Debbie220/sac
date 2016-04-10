@@ -1,7 +1,7 @@
 <?php
 Route::group(['middleware' => 'web'], function () {
-    Route::post('/test', 'StaticPagesController@test')->name('test');
-    Route::get('/test2', 'StaticPagesController@test2')->name('test2');
+    Route::post('/login', 'StaticPagesController@login')->name('login');
+    Route::get('/logout', 'StaticPagesController@logout')->name('logout');
 
     Route::get('/', 'StaticPagesController@home')->name('home');
     Route::get('edit', 'UsersController@edit')->name('edit');

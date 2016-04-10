@@ -14,13 +14,6 @@
         <p class="navbar-text navbar-right">
           <span class="uofatext">
             You are not signed in.
-            <a class="uofatext" href="{{ url('/login') }}">
-              Login
-            </a>
-            or
-            <a class="uofatext" href="{{ url('/register') }}">
-              Signup
-            </a>
           </span>
         </p>
       @endif

@@ -4,12 +4,12 @@
     <div class="jumbotron">
         <h1> Welcome to the SAC registration system!</h1>
         <div class="g-signin2" data-onsuccess="onSignIn"></div>
-        <a href="#" onclick="signOut();">Sign out</a>
-
     </div>
 @endsection
 
 @push('scripts')
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
 <script type="text/javascript">
     $.ajaxSetup({
         headers: {
@@ -46,10 +46,10 @@
 
         $.ajax({
             type: "POST",
-            url: "{{ route('test') }}",
+            url: "{{ route('login') }}",
             data: {id_token : idToken},
             success: function (data) {
-                console.log(data);
+                location.reload();
             },
             error: function (data) {
                 console.log('Error:', data.responseText);
@@ -57,26 +57,5 @@
         });
 
     }
-
-    function signOut() {
-        var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
-            console.log('User signed out.');
-        });
-    }
-
-
-        // var response = request('login.php', 'POST', { id_token: idToken });
-        // user = JSON.parse(response);
-
-        // // Hide sign-in button and show sign-out and account buttons
-        // $('#button-view-profile').removeClass('hidden');
-        // $('#button-view-profile').prepend('<img src="' + userPicURL + '" alt="USER PIC">');
-        // $('#button-sign-out').removeClass('hidden');
-        // $('#googleSignIn').addClass('hidden');
-
-        // console.log(user);
-
-
 </script>
 @endpush

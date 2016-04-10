@@ -19,21 +19,26 @@ class StaticPagesController extends Controller
         return view('static.home');
     }
 
-    public function test(Request $request){
+    public function login(Request $request){
         $token = $request['id_token'];
         $user_data = $this->create_gclient($token);
 
-        $user = new User();
-        $user['name'] = $user_data['name'];
-        $user['email'] = $user_data['email'];
+        $user = User::firstOrCreate(['name' => $user_data['name'],
+                'email' => $user_data['email']]);
 
-        try{
-            $user->save();
-        } catch(\Illuminate\Database\QueryException $e){
-        
+        Auth::login($user);
+        return redirect(route('user.show', $user));
+    }
+
+    public function logout(){
+        if(Auth::check()){
+            try{
+                Auth::logout();
+            } catch(\Illuminate\Database\QueryException $e){
+                // It tries to update the remember token that's why it fails
+            }
         }
-        flash()->success("Logged in!");
-        return "success";
+        return redirect(route('home'));
     }
 
     private function create_gclient($token){
