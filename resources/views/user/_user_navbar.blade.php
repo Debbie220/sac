@@ -26,15 +26,6 @@
   </a>
 </p>
 
-<p class="navbar-text navbar-right">
-  <a href="{{ route('edit') }}">
-    <span class="uofatext">
-      <i class="fa fa-user fa-fw"></i>
-      Edit profile
-    </span>
-  </a>
-</p>
-
 @push('scripts')
 <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 

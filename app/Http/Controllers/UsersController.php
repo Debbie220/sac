@@ -81,26 +81,4 @@ class UsersController extends Controller
 
         return redirect(route('user.show', $user->id));
     }
-
-    public function edit(){
-        $user = Auth::user();
-        return view('user.edit')->with('user', $user);
-    }
-
-    public function update(Request $request){
-        $this->validate($request, [
-            'name' => 'required|max:255|min:6'
-        ]);
-        $user = Auth::user();
-        if($user->is_professor()){
-            $presentations = Presentation::where('professor_name', $user->name)->get();
-            foreach($presentations as $p){
-                $p->professor_name = $request['name'];
-                $p->save();
-            }
-        }
-        $user->update($request->all());
-        flash()->success("Your profile has been updated");
-        return redirect(route('user.show', $user->id));
-    }
 }

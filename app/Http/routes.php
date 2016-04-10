@@ -4,8 +4,6 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/logout', 'StaticPagesController@logout')->name('logout');
 
     Route::get('/', 'StaticPagesController@home')->name('home');
-    Route::get('edit', 'UsersController@edit')->name('edit');
-    Route::post('update', 'UsersController@update')->name('update');
 
     Route::resource('presentation', 'PresentationsController',
         ['except' => 'show']);
