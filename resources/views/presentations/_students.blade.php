@@ -1,16 +1,14 @@
-<div class="form-group">
+<div class="form-group required">
     <label class="col-md-3 control-label">Student Name</label>
 
     <div class="col-md-5">
         <input type="text" class="form-control" name="student_name[]"
-            @if(Auth::user()->is_student())
-                value="{{ Auth::user()->name }}"
-                readonly
-            @elseif(!empty($students))
+            @if(!empty($students))
                 value="{{ $students[0]->student_name }}"
+            @elseif(Auth::user()->is_student())
+                value="{{ Auth::user()->name }}"
             @endif
             >
-
     </div>
 
     <div class="col-md-1 checkbox">

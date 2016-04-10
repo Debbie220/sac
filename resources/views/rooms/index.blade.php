@@ -13,8 +13,8 @@
 <table class="table">
     <tr class="row">
         <th class="col-lg-3 col-md-3 col-sm-3 text-center">Code</th>
-        <th class="col-lg-3 col-md-3 col-sm-3">Building</th>
         <th class="col-lg-3 col-md-3 col-sm-3">Description</th>
+        <th class="col-lg-3 col-md-3 col-sm-3">Building</th>
         <th class="col-lg-1 col-md-1 col-sm-1"></th>
         <th class="col-lg-1 col-md-1 col-sm-1"></th>
     </tr>
@@ -24,10 +24,10 @@
                 {{$room->code}}
             </td>
             <td>
-                {{$room->building}}
+                {{$room->description}}
             </td>
             <td>
-                {{$room->description}}
+                {{$room->building}}
             </td>
             <td class="text-center">
                 @include('rooms._change_availability',

@@ -1,5 +1,5 @@
 {{ csrf_field() }}
-<div class="form-group{{ $errors->has('professor_name') ? ' has-error' : '' }}">
+<div class="form-group{{ $errors->has('professor_name') ? ' has-error' : '' }} required">
     <label class="col-md-3 control-label">Professor Name</label>
 
     <div class="col-md-6">
@@ -22,7 +22,7 @@
 
 @include("presentations._students")
 
-<div class="form-group{{ $errors->has('course_id') ? ' has-error' : '' }}">
+<div class="form-group{{ $errors->has('course_id') ? ' has-error' : '' }} required">
     <label class="col-md-3 control-label">Course</label>
 
     <div class="col-md-6">
@@ -46,7 +46,7 @@
     </div>
 </div>
 
-<div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
+<div class="form-group{{ $errors->has('title') ? ' has-error' : '' }} required">
     <label class="col-md-3 control-label">Title</label>
 
     <div class="col-md-6">
@@ -61,7 +61,7 @@
     </div>
 </div>
 
-<div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
+<div class="form-group{{ $errors->has('type') ? ' has-error' : '' }} required">
     <label class="col-md-3 control-label">Type</label>
 
     <div class="col-md-6">
@@ -115,7 +115,7 @@
 </div>
 
 @if(!Auth::user()->is_student())
-<div class="form-group{{ $errors->has('our_nominee') ? ' has-error' : '' }}">
+<div class="form-group{{ $errors->has('our_nominee') ? ' has-error' : '' }} required">
     <div class="col-md-offset-3 col-md-6">
         <label>Nominate this student for an OUR?</label>
         <div class="radio">
@@ -138,7 +138,7 @@
 </div>
 @endif
 
-<div class="form-group">
+<div class="form-group ">
     <div class="col-md-6 col-md-offset-6">
         <a class="btn btn-default" href="{{ route('home') }}">
             <i class="fa fa-arrow-left"></i>

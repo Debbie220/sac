@@ -71,6 +71,10 @@ class PresentationsController extends Controller
     public function store(PresentationRequest $request){
         $fields = $request->all();
         $students = $fields['student_name'];
+        if(empty($students[0])){
+            flash()->error("At least one student is required!");
+            return back()->withInput();
+        }
         unset($fields['student_name']);
         $user = Auth::user();
 
@@ -81,6 +85,7 @@ class PresentationsController extends Controller
         }else {
             $presentation->status = "S";
         }
+
 
         if($presentation->save()){
             $this->save_students($students, $presentation->id);
@@ -118,6 +123,10 @@ class PresentationsController extends Controller
 
         $fields = $request->all();
         $students = $fields['student_name'];
+        if(empty($students[0])){
+            flash()->error("At least one student is required!");
+            return back()->withInput();
+        }
         unset($fields['student_name']);
         $user = Auth::user();
 
@@ -136,7 +145,7 @@ class PresentationsController extends Controller
             flash()->overlay("Don't forget to resubmit this update"
                  ." to SAC coordinator", "Success!");
         }
-        return redirect()->route('user.show', Auth::user());
+        return redirect()->route('user.show', $user);
     }
 
     /**

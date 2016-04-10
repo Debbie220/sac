@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Auth;
+use Validator;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -81,16 +82,15 @@ class UsersController extends Controller
         return redirect(route('user.show', $user->id));
     }
 
-    public function test(){
-      return view('user.test');
-    }
-
     public function edit(){
         $user = Auth::user();
-        return view('user._edit')->with('user', $user);
+        return view('user.edit')->with('user', $user);
     }
 
     public function update(Request $request){
+        $this->validate($request, [
+            'name' => 'required|max:255|min:6'
+        ]);
         $user = Auth::user();
         if($user->is_professor()){
             $presentations = Presentation::where('professor_name', $user->name)->get();
@@ -102,6 +102,5 @@ class UsersController extends Controller
         $user->update($request->all());
         flash()->success("Your profile has been updated");
         return redirect(route('user.show', $user->id));
-
     }
 }

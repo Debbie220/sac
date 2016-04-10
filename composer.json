@@ -8,7 +8,6 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
         "doctrine/dbal": "^2.5",
-        "twbs/bootstrap": "^3.3",
         "laracasts/flash": "^1.3",
         "laracasts/utilities": "~2.0"
     },
