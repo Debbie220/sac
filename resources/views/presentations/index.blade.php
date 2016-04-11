@@ -4,13 +4,13 @@
 Presentations
 @stop
 
-@section('add_object')
-    <a href="{{ route('presentation.pending')}}" class="btn btn-default">
-    Pending Presentations</a>
-@stop
-
 @section('admin_content')
-
+<ul class="nav nav-tabs">
+  <li role="presentation"><a href="{{ route('presentation.status', 'approved') }}">Approved</a></li>
+  <li role="presentation"><a href="{{ route('presentation.status', 'pending') }}">Pending Approval</a></li>
+  <li role="presentation"><a href="{{ route('presentation.status', 'saved') }}">Saved</a></li>
+  <li role="presentation"><a href="{{ route('presentation.status', 'declined') }}">Declined</a></li>
+</ul>
     @forelse($courses as $course)
         <h3>
             {{ $course->toString() }}

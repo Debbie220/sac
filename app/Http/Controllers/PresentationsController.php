@@ -35,15 +35,16 @@ class PresentationsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){
+    public function index($status = "Approved"){
 
         /*
         This fetches the courses with presentations and iterate through them
         on the html page. It's used to divide the presentations by course.
         */
         $courses = Course::where('offered_this_semester',true)->
-            whereHas('presentations', function ($query) {
-                $query->where('conference_id', '=', get_current_conference_id());
+            whereHas('presentations', function ($query) use ($status) {
+                $query->where('conference_id', '=', get_current_conference_id())->
+                    where('status', '=', strtoupper($status[0]));
             })->paginate(5);
 
         return view('presentations.index',

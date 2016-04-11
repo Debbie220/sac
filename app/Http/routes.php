@@ -12,8 +12,6 @@ Route::group(['middleware' => 'web'], function () {
             name('presentation.submit');
         Route::patch('{id}/approve', 'PresentationsController@approve')->
             name('presentation.approve');
-        Route::get('pending', 'PresentationsController@pending')->
-            name('presentation.pending');
         Route::patch('{id}/decline', 'PresentationsController@decline')->
             name('presentation.decline');
         Route::post('{id}/decline', 'PresentationsController@save_comment')->
@@ -26,6 +24,7 @@ Route::group(['middleware' => 'web'], function () {
             name('delete_time');
         Route::post('addTime/{display_room}', 'PresentationsController@addTime')->
             name('add_time');
+        Route::get('/{status}', 'PresentationsController@index')->name('presentation.status');
     });
 
     Route::get('user/my', 'UsersController@show')->name('user.show');
