@@ -5,7 +5,12 @@
         </div>
         <div class="col-md-10">
             @if(current_conference())
+            <p>
+                The current conference is <b>{{ current_conference()->description }}</b>
+            </p>
+            <p>
                 You have {{count_presentations()}} presentations under this conference
+            </p>
             @else
                 You haven't created a conference yet!
             @endif

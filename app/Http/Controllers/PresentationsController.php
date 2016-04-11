@@ -42,7 +42,9 @@ class PresentationsController extends Controller
         on the html page. It's used to divide the presentations by course.
         */
         $courses = Course::where('offered_this_semester',true)->
-            has('presentations')->paginate(5);
+            whereHas('presentations', function ($query) {
+                $query->where('conference_id', '=', get_current_conference_id());
+            })->paginate(5);
 
         return view('presentations.index',
             compact('courses'));
