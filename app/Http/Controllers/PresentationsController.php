@@ -94,7 +94,7 @@ class PresentationsController extends Controller
             flash()->error("Presentation couldn't be saved");
         }
 
-        return redirect()->route('user.show', $user);
+        return redirect()->route('user.show');
     }
 
 
@@ -145,7 +145,7 @@ class PresentationsController extends Controller
             flash()->overlay("Don't forget to resubmit this update"
                  ." to SAC coordinator", "Success!");
         }
-        return redirect()->route('user.show', $user);
+        return redirect()->route('user.show');
     }
 
     /**
@@ -164,7 +164,7 @@ class PresentationsController extends Controller
 
         flash()->success("Presentation submitted with success!");
 
-        return redirect()->route('user.show', Auth::user());
+        return redirect()->route('user.show');
     }
 
 
@@ -181,7 +181,7 @@ class PresentationsController extends Controller
         $presentation->delete();
         flash()->success("Presentation deleted!");
 
-        return redirect()->route('user.show', Auth::user());
+        return redirect()->route('user.show');
     }
 
     public function approve($id){

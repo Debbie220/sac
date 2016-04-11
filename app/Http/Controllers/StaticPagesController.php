@@ -15,7 +15,7 @@ class StaticPagesController extends Controller
 {
     public function home(){
         if(Auth::check())
-            return redirect()->route('user.show', Auth::user());
+            return redirect()->route('user.show');
         return view('static.home');
     }
 
@@ -23,11 +23,12 @@ class StaticPagesController extends Controller
         $token = $request['id_token'];
         $user_data = $this->create_gclient($token);
 
-        $user = User::firstOrCreate(['name' => $user_data['name'],
+        $user = User::firstOrCreate([
+                'name' => $user_data['name'],
                 'email' => $user_data['email']]);
 
         Auth::login($user);
-        return redirect(route('user.show', $user));
+        return redirect(route('user.show'));
     }
 
     public function logout(){

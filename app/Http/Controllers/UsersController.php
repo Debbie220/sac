@@ -21,24 +21,16 @@ class UsersController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the current user.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
         $user = Auth::user();
-        if($id == $user->id){
-            $presentations = $user->presentations()->
-            orderBy('updated_at','desc')->get();
-            return view('user.show', compact('presentations'));
-        }
-        else {
-            flash()->error('You are not allowed to see others profiles!');
-            return redirect(route('user.show', $user->id));
-        }
-
+        $presentations = $user->presentations()->
+        orderBy('updated_at','desc')->get();
+        return view('user.show', compact('presentations'));
     }
 
     public function my_courses(){
@@ -79,6 +71,6 @@ class UsersController extends Controller
             flash()->error("You don't have this course");
         }
 
-        return redirect(route('user.show', $user->id));
+        return redirect(route('my_courses'));
     }
 }

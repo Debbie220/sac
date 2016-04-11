@@ -28,7 +28,15 @@ Route::group(['middleware' => 'web'], function () {
             name('add_time');
     });
 
-    Route::resource('user', 'UsersController', ['only' => 'show']);
+    Route::get('user/my', 'UsersController@show')->name('user.show');
+    Route::group(['prefix' => 'professor/my'], function () {
+        Route::get('courses', 'UsersController@my_courses')->
+            name('my_courses');
+        Route::post('add', 'UsersController@add_course')->
+            name('add_course');
+        Route::post('remove/{id}', 'UsersController@remove_course')->
+            name('remove_course');
+    });
 
     Route::resource('room', 'RoomsController');
     Route::put('changeAvailability/{id}', 'RoomsController@changeAvailability')->
@@ -54,14 +62,5 @@ Route::group(['middleware' => 'web'], function () {
     Route::group(['prefix' => 'course'], function (){
         Route::get('index', 'CoursesController@index')->name('course.index');
         Route::post('add', 'CoursesController@new_courses')->name('course.add');
-    });
-
-    Route::group(['prefix' => 'professor/my'], function () {
-        Route::get('courses', 'UsersController@my_courses')->
-            name('my_courses');
-        Route::post('add', 'UsersController@add_course')->
-            name('add_course');
-        Route::post('remove/{id}', 'UsersController@remove_course')->
-            name('remove_course');
     });
 });

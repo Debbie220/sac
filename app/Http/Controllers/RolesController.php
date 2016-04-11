@@ -28,7 +28,7 @@ class RolesController extends Controller
         $user->requested_new_role = true;
         $user->save();
         flash("Request has been sent! Wait for administratror's approval");
-        return redirect(route('user.show', $user->id));
+        return redirect(route('user.show');
     }
 
     public function approve($id){
