@@ -6,6 +6,43 @@ title: SAC
   <h2>
   	Admin
   </h2>
+  <p>The website administrator can create a conference, view submitted presentations,
+    schedule the conference, and view the courses in the system.
+  </p>
+  <h4>
+    Creating a new Conference
+  </h4>
+  <p>
+      Before students are able to register for their presentations, you must create a new conference.
+      First, click on the <a> Rooms</a> tab and add the rooms that will be used in the conference.
+      Only rooms marked as <button class="btn btn-success"> Available </button>
+      will be added to the conference.  Any new presentations that are submitted
+      will be assigned to the current conference, so it is important to only
+      create a new conference when the current one has concluded.  To create a
+      new conference:
+  </p>
+  <ol>
+    <li>
+      Click <a> Create new Conference</a> on the side menu.
+    </li>
+    <li>
+      Enter the name of the conference (eg. SAC Winter 2016).
+    </li>
+    <li>
+      Press <button class="btn btn-default"> Add a Day </button>
+       to add additional days to the conference.
+    </li>
+    <li>
+        For each day, set the start times of the first and last presentations.
+        <p>
+        NOTE: The 24 hour time format is used.
+      </p>
+      </li>
+    <li>
+      Press <button class="btn btn-primary">Create</button>.  This will populate
+       each room with half an hour timeslots for the duration of the conference.
+    </li>
+  </ol>
 
   <h4 id="Presentations">Controlling Presentations</h4>
   <ul>
@@ -32,52 +69,15 @@ title: SAC
             <button class="btn btn-default">Pending Presentations</button>
              in the top right corner of the page.
         </li>
+        <li>
+          On the <em>Pending Presentations</em> page, press <button class="btn btn-default">
+            <i class="fa fa-thumbs-up"></i> Approve </button> to approve a presentation.
+             To decline a presentation, press <button class="btn btn-default">
+               <i class="fa fa-thumbs-down"></i> Decline </button> and enter a short message
+               explaining why you are declining the presentation.  Then press
+               <button class='btn btn-primary'><i class='fa fa-save'></i> Save </button>, and
+               your comment will be displayed to the creater of the presentation.
   </ul>
-  <h4>
-    Creating a new Conference
-  </h4>
-  <p>
-      Before students are able to register for their presentations, you must create a new conference.
-      First click on the <a href="#"> Rooms</a> tabd and add the rooms that will be needed for the conference
-      Only rooms marked as <button class="btn btn-success"> Available </button>
-      will be added to the conference.
-      NOTE: Do not create a new conference before the current one has ended.
-  </p>
-  <ol>
-    <li>
-      Click on <a href="#"> Create a new conference</a> on the side menu
-    </li>
-    <li>
-      Type in the conference name
-    </li>
-    <li>
-      If the conference is for more than one day then click
-      <button class="btn btn-default"> Add a Day </button>
-       to add a new day to the conference
-    </li>
-    <li>
-      Input the start times for the first time slot and the start times for the
-        last time slots for each Day
-        <p>
-        NOTE: the time format is 24 hours
-      </p>
-      </li>
-  </ol>
-
-  <h4 id="courses">
-    Add new courses
-  </h4>
-  <ol>
-    <li>
-      Click on the side menu option <a href="#"> Courses</a>
-    </li>
-    <li>
-      Click on the button <button class="btn btn-primary"> Check for new Courses</button>
-    </li>
-    <p>
-      New Courses from beartracks will automatically be added to the current course list
-    </p>
-  </ol>
 
   <h4 id="scheduling">
     Scheduling
@@ -88,8 +88,8 @@ title: SAC
     </li>
     <li>
       The student names, titles, and OUR statuses of all of the <em>
-        approved</em> presentations will appear in the well on the left
-        hand side of the page.
+        approved</em> presentations that have <em>not</em> been scheduled
+        will appear in the well on the left hand side of the page.
     </li>
     <li>
       The rooms that are available in the current conference are shown
@@ -110,11 +110,27 @@ title: SAC
     <li>
       To add a timeslot, press <button class="btn btn-default">
         <i class="fa fa-plus"></i> Add Timeslot </button> at the bottom right
-         of the page.  Specify the day, the starting hour, and the starting
-          minute of the new timeslot and hit
-          <button class="btn btn-primary">Create Time Slot</button>
+         of the page.  Specify the day, starting hour, and starting
+          minute of the new timeslot, then press
+          <button class="btn btn-primary">Create Time Slot</button>.
     </li>
   </ul>
+  <h4 id="courses">
+    Add new courses
+  </h4>
+  <ol>
+    <li>
+      Click on the side menu option <a href="#"> Courses</a>
+    </li>
+    <li>
+      Click on the button <button class="btn btn-primary"> Check for new Courses</button>
+    </li>
+    <p>
+      New Courses from beartracks will automatically be added to the current course list
+    </p>
+  </ol>
+
+
 
 
 
