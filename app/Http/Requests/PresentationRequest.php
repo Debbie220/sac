@@ -15,7 +15,6 @@ class PresentationRequest extends Request
      */
     public function authorize()
     {
-        //TODO: Change this value after adding roles
         return true;
     }
 

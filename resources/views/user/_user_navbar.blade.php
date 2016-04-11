@@ -5,6 +5,8 @@
 @elseif(Auth::user()->is_professor())
   @include('user.professor._navbar')
 @endif
+
+@if(get_current_conference_id())
 <p class="navbar-text">
   <a href="{{ route('presentation.create') }}">
     <span class="uofatext">
@@ -13,6 +15,7 @@
     </span>
   </a>
 </p>
+@endif
 
 <!-- Workaround to make the button appear with padding right -->
 <p class="navbar-text navbar-right"></p>

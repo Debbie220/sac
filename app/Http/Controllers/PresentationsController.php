@@ -69,6 +69,10 @@ class PresentationsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(PresentationRequest $request){
+        if(!current_conference()){
+            flash()->error("You can't create a presentation yet!");
+            return redirect(route('user.show'));
+        }
         $fields = $request->all();
         $students = $fields['student_name'];
         if(empty($students[0])){
@@ -80,6 +84,7 @@ class PresentationsController extends Controller
 
         $presentation = new Presentation($fields);
         $presentation->owner = $user->id;
+        $presentation->conference_id = get_current_conference_id();
         if($user->is_admin()){
             $presentation->status = "A";
         }else {
