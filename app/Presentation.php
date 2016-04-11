@@ -22,6 +22,10 @@ class Presentation extends Model
 
     protected $dates = ['submitted_at', 'approved_at'];
 
+    public function conference(){
+        return $this->belongsTo("App\Conference", "conference_id");
+    }
+
     public function course(){
         return $this->belongsTo("App\Course", "course_id");
     }
