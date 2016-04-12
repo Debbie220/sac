@@ -29,7 +29,8 @@ class UsersController extends Controller
     {
         $user = Auth::user();
         $presentations = $user->presentations()->
-        orderBy('updated_at','desc')->get();
+            where('conference_id', '=', get_current_conference_id())->
+            orderBy('course_id')->get();
         return view('user.show', compact('presentations'));
     }
 
