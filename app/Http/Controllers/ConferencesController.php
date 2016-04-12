@@ -33,23 +33,17 @@ class ConferencesController extends Controller
     }
 
     public function create(){
-        $days =[1,2,3,4,5];
-        $numDays=1;
-        $first = "00:00";
-        $last = "23:30";
-        $times=[];
-        $tStart = strtotime($first);
-        $tEnd = strtotime($last);
-        $tNow = $tStart;
-        $i=0;
+        $times = [];
+        $tNow = strtotime("10:00");
+        $tEnd = strtotime("22:00");
 
-        while($tNow <= $tEnd){
-            //echo date("H:i",$tNow)."\n";
+        while($tNow < $tEnd){
+            array_push($times, date("H:i", $tNow));
             $tNow = strtotime('+30 minutes',$tNow);
-            $times[$i] = date("H:i", $tNow)."\n";
-            $i = $i + 1;
         }
 
+        $days =[1,2,3,4,5];
+        $numDays=1;
         return view('conferences.new', compact('days', 'times', 'numDays'));
     }
 
