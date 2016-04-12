@@ -14,7 +14,7 @@ Old Conferences
 
                 @foreach($conferences as $conference)
                     <option value="{{ $conference->id }}">
-                    {{ $conference->description }}</option>
+                    {{ $conference->name }}</option>
                 @endforeach
             </select>
         </div>
@@ -27,7 +27,7 @@ Old Conferences
     </form>
 
     <br><br>
-        <h3><b> {{ $chosen_conf->description }} </b> selected.</h3>
+        <h3><b> {{ $chosen_conf->name }} </b> selected.</h3>
     <hr>
 
     @forelse($presentations as $p)

@@ -6,7 +6,7 @@
         <div class="col-md-10">
             @if(current_conference())
             <p>
-                The current conference is <b>{{ current_conference()->description }}</b>
+                The current conference is <b>{{ current_conference()->name }}</b>
             </p>
             <p>
                 You have {{count_presentations()}} presentations under this conference

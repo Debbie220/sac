@@ -30,6 +30,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::group(['prefix' => 'conference'], function (){
         Route::get('/old', 'ConferencesController@old')->
             name('conference.old');
+        Route::get('/new', 'ConferencesController@create')->
+            name('conference.create');
+        Route::post('/new', 'ConferencesController@store')->
+            name('conference.store');
     });
 
     Route::get('user/my', 'UsersController@show')->name('user.show');
@@ -57,12 +61,6 @@ Route::group(['middleware' => 'web'], function () {
             name('role.new');
     });
 
-    Route::group(['prefix' => 'admin'], function () {
-        Route::get('new_conference', 'AdminController@make_conference')->
-                  name('new_conference');
-        Route::post('new_conference', 'AdminController@create_conference')->
-                  name('create_conference');
-    });
     Route::group(['prefix' => 'course'], function (){
         Route::get('index', 'CoursesController@index')->name('course.index');
         Route::post('add', 'CoursesController@new_courses')->name('course.add');
