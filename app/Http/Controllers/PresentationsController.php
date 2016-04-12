@@ -252,7 +252,8 @@ class PresentationsController extends Controller
     }
 
     public function show_schedule($display_room = null){
-      $presentations = Presentation::where('status', 'A')->get();
+      $presentations = Presentation::where('status', 'A')->
+        where('conference_id', '=', get_current_conference_id())->get();
       $conference = Conference::orderBy('id','desc')->first();
       $timeslots = Timeslot::where('conference_id', $conference->id)->
                       where('room_code', $display_room)->
