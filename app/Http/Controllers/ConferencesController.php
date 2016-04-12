@@ -51,19 +51,16 @@ class ConferencesController extends Controller
         $this->validate($request, [
             'name' => 'required|min:5|max:255',
         ]);
-        $conference = new Conference();
-        $conference->name = $request['name'];
-        $conference->save();
-        $rooms = Room::where('available', true)->get();
-
-        print_r($request->all());
         $first = $request['start_time'];
         $last = $request['end_time'];
-
         if(empty($first[0]) or empty($last[0])){
             flash()->error("You must add a start time and an end time");
             return back()->withInput();
         }
+        $conference = new Conference();
+        $conference->name = $request['name'];
+        $conference->save();
+        $rooms = Room::where('available', true)->get();
 
         $numDays = sizeOf($first);
         //start day loop from here
