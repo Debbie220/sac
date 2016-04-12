@@ -9,7 +9,7 @@ Courses
     {{ csrf_field() }}
 
     <button type="submit" class="btn btn-primary"
-            aria-label="Delete Presentation" title="Delete Presentation">
+            aria-label="Check for new Courses" title="Check for new Courses">
             Check for new Courses
     </button>
 </form>
