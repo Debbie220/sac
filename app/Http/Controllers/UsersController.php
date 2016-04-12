@@ -21,24 +21,16 @@ class UsersController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the current user.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
         $user = Auth::user();
-        if($id == $user->id){
-            $presentations = $user->presentations()->
-            orderBy('updated_at','desc')->get();
-            return view('user.show', compact('presentations'));
-        }
-        else {
-            flash()->error('You are not allowed to see others profiles!');
-            return redirect(route('user.show', $user->id));
-        }
-
+        $presentations = $user->presentations()->
+        orderBy('updated_at','desc')->get();
+        return view('user.show', compact('presentations'));
     }
 
     public function my_courses(){
@@ -79,28 +71,6 @@ class UsersController extends Controller
             flash()->error("You don't have this course");
         }
 
-        return redirect(route('user.show', $user->id));
-    }
-
-    public function edit(){
-        $user = Auth::user();
-        return view('user.edit')->with('user', $user);
-    }
-
-    public function update(Request $request){
-        $this->validate($request, [
-            'name' => 'required|max:255|min:6'
-        ]);
-        $user = Auth::user();
-        if($user->is_professor()){
-            $presentations = Presentation::where('professor_name', $user->name)->get();
-            foreach($presentations as $p){
-                $p->professor_name = $request['name'];
-                $p->save();
-            }
-        }
-        $user->update($request->all());
-        flash()->success("Your profile has been updated");
-        return redirect(route('user.show', $user->id));
+        return redirect(route('my_courses'));
     }
 }

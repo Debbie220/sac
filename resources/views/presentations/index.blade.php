@@ -4,85 +4,87 @@
 Presentations
 @stop
 
-@section('add_object')
-    <a href="{{ route('presentation.pending')}}" class="btn btn-default">
-    Pending Presentations</a>
-@stop
-
 @section('admin_content')
+<ul class="nav nav-tabs">
+    <li role="presentation" class="{{ $status == 'A' ? 'active' : ''}}">
+        <a href="{{ route('presentation.status', 'approved') }}">Approved</a>
+    </li>
+    <li role="presentation" class="{{ $status == 'P' ? 'active' : ''}}">
+        <a href="{{ route('presentation.status', 'pending') }}">Pending Approval</a>
+    </li>
+    <li role="presentation" class="{{ $status == 'S' ? 'active' : ''}}">
+        <a href="{{ route('presentation.status', 'saved') }}">Saved</a>
+    </li>
+    <li role="presentation" class="{{ $status == 'D' ? 'active' : ''}}">
+        <a href="{{ route('presentation.status', 'declined') }}">Declined</a>
+    </li>
+</ul>
 
-    @forelse($courses as $course)
-        <h3>
-            {{ $course->toString() }}
-        </h3>
+<br>
+    @forelse($presentations as $index=>$p)
+        <div class="row ">
+            <div class="col-lg-5 col-md-5 col-sm-5 info">
+                @include('presentations._presentation_info', ['p' => $p])
+            </div>
 
-        @forelse($course->presentations as $index=>$p)
-            <div class="row ">
-                <div class="col-lg-8 col-md-8 col-sm-8 ">
-                    <h4>
-                        <a data-toggle="collapse"
-                            href="#{{$index . $p->id}}" aria-expanded="false"
-                            aria-controls="details">
-                            {{$p['title']}}
-                        </a>
-                    </h4>
-                    <div id="{{$index . $p->id}}" class="collapse">
-                        <p>
-                            <b>Professor:</b> {{ $p['professor_name'] }}
-                        </p>
-                        <p>
-                            <b>Students:</b>
-                            <ul class="list-unstyled">
-                            @foreach($p->students() as $student)
-                                <li>{{ $student->student_name }}</li>
-                            @endforeach
-                            </ul>
-                        </p>
-                        <p>
-                            <b>Abstract:</b> {{$p['abstract']}}
-                        </p>
-                    </div>
+            <div class="col-lg-1 col-md-1 col-sm-1 text-center">
+                <a href="{{ route('presentation.edit', $p['id'])}}"
+                    class="btn btn-default">
+                    Edit
+                </a>
+            </div>
+
+            <div class="col-lg-1 col-md-1 col-sm-1 text-center">
+                @if($p['our_nominee'])
+                    <span title="OUR Nominee"><i class="fa fa-star fa-lg"></i></span>
+                @endif
+            </div>
+
+            @if($p->status == "P")
+                <div class="col-lg-2 col-md-2 col-sm-2 text-center">
+                    <form action="{{ route('presentation.approve', $p->id)}}"
+                        role='form' method="POST">
+                        {{ csrf_field() }}
+                        {{ method_field('PATCH') }}
+                        <button type="submit" class="btn btn-default">
+                            <i class="fa fa-thumbs-up"></i>Approve
+                        </button>
+                    </form>
                 </div>
-
-                <div class="col-lg-1 col-md-1 col-sm-1 text-center">
-                    <a href="{{ route('presentation.edit', $p['id'])}}"
-                        class="btn btn-default">
-                        Edit
+                <div class="col-lg-2 col-md-2 col-sm-2 text-center">
+                    <a class="btn btn-default"
+                        href="{{ route('presentation.decline', $p->id) }}">
+                        <i class="fa fa-thumbs-down"></i>Decline
                     </a>
                 </div>
-
-                <div class="col-lg-1 col-md-1 col-sm-1 text-center">
-                    @if($p['our_nominee'])
-                        <span title="OUR Nominee"><i class="fa fa-star fa-lg"></i></span>
-                    @endif
+            @else
+                <div class="col-lg-2 col-md-2 col-sm-2 ">
+                    <p class = "
+                        @if($p->status == 'S')
+                            label label-warning
+                        @elseif($p->status == 'D')
+                            label label-danger
+                        @elseif($p->status == 'A')
+                            label label-success
+                        @else
+                            label label-info
+                        @endif">
+                        {{ $p->status()->get()->first()->description }}
+                    </p>
                 </div>
-
-            <div class="col-lg-1 col-md-1 col-sm-1 ">
-                <span class = "
-                    @if($p->status == 'S')
-                        label label-warning
-                    @elseif($p->status == 'D')
-                        label label-danger
-                    @elseif($p->status == 'A')
-                        label label-success
-                    @else
-                        label label-info
-                    @endif">
-                    {{ $p->status()->get()->first()->description }}
-                </span>
-              </div>
-            </div>
-            <br>
-        @empty
-            <h4>No presentations yet!</h4>
-        @endforelse
+                <div class="col-lg-2 col-md-2 col-sm-2 ">
+                    {{$p->course->subject_code . " " . $p->course->number}}
+                </div>
+            @endif
+        </div>
+        <br>
     @empty
-        No courses or presentations.
+        <h4>No presentations yet!</h4>
     @endforelse
-
-    {{ $courses->links() }}
 
     <br>
     <small><i class="fa fa-star fa-lg"></i> = OUR Nominee</small>
     <br>
+
+    
 @stop

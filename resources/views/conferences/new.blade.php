@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <form class="form-horizontal" role="form" method="POST"
-            action="{{ route('create_conference') }}">
+            action="{{ route('conference.store') }}">
                 {{ csrf_field() }}
 
               <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -21,7 +21,7 @@
                     </div>
                 </div>
 
-                @include("user.admin.dayTimes")
+                @include("conferences._day_time")
 
 
                 <div class="form-group">

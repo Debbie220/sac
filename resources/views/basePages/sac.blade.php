@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head
     content must come *after* these tags -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="google-signin-client_id" content="813063530942-30qk2j5pbentenlho080oldb2pi2ljrn.apps.googleusercontent.com">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" 
         integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" 
         crossorigin="anonymous">
@@ -26,6 +28,7 @@
     </div>
 
     @include('basePages.uofafooter')
+
 
     <script src="https://code.jquery.com/jquery-2.2.3.min.js"
         integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="

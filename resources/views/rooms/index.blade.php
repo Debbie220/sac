@@ -34,7 +34,9 @@
                     ['id' => $room['code']])
             </td>
             <td class="text-center">
-                @include('rooms._delete', ['code' => $room['code']])
+                @include('basePages._delete_item', 
+                    ['route_name' => 'room.destroy',
+                    'id' => $room['code'], 'title' => 'Delete Room'])
             </td>
         </tr>
         @endforeach

@@ -1,9 +1,9 @@
 <?php
 Route::group(['middleware' => 'web'], function () {
+    Route::post('/login', 'StaticPagesController@login')->name('login');
+    Route::get('/logout', 'StaticPagesController@logout')->name('logout');
+
     Route::get('/', 'StaticPagesController@home')->name('home');
-    Route::get('edit', 'UsersController@edit')->name('edit');
-    Route::post('update', 'UsersController@update')->name('update');
-    Route::auth();
 
     Route::resource('presentation', 'PresentationsController',
         ['except' => 'show']);
@@ -12,9 +12,7 @@ Route::group(['middleware' => 'web'], function () {
             name('presentation.submit');
         Route::patch('{id}/approve', 'PresentationsController@approve')->
             name('presentation.approve');
-        Route::get('pending', 'PresentationsController@pending')->
-            name('presentation.pending');
-        Route::patch('{id}/decline', 'PresentationsController@decline')->
+        Route::get('{id}/decline', 'PresentationsController@decline')->
             name('presentation.decline');
         Route::post('{id}/decline', 'PresentationsController@save_comment')->
             name('presentation.comment');
@@ -26,9 +24,27 @@ Route::group(['middleware' => 'web'], function () {
             name('delete_time');
         Route::post('addTime/{display_room}', 'PresentationsController@addTime')->
             name('add_time');
+        Route::get('/{status}', 'PresentationsController@index')->name('presentation.status');
     });
 
-    Route::resource('user', 'UsersController', ['only' => 'show']);
+    Route::group(['prefix' => 'conference'], function (){
+        Route::get('/old', 'ConferencesController@old')->
+            name('conference.old');
+        Route::get('/new', 'ConferencesController@create')->
+            name('conference.create');
+        Route::post('/new', 'ConferencesController@store')->
+            name('conference.store');
+    });
+
+    Route::get('user/my', 'UsersController@show')->name('user.show');
+    Route::group(['prefix' => 'professor/my'], function () {
+        Route::get('courses', 'UsersController@my_courses')->
+            name('my_courses');
+        Route::post('add', 'UsersController@add_course')->
+            name('add_course');
+        Route::post('remove/{id}', 'UsersController@remove_course')->
+            name('remove_course');
+    });
 
     Route::resource('room', 'RoomsController');
     Route::put('changeAvailability/{id}', 'RoomsController@changeAvailability')->
@@ -45,23 +61,8 @@ Route::group(['middleware' => 'web'], function () {
             name('role.new');
     });
 
-    Route::group(['prefix' => 'admin'], function () {
-        Route::get('new_conference', 'AdminController@make_conference')->
-                  name('new_conference');
-        Route::post('new_conference', 'AdminController@create_conference')->
-                  name('create_conference');
-    });
     Route::group(['prefix' => 'course'], function (){
         Route::get('index', 'CoursesController@index')->name('course.index');
         Route::post('add', 'CoursesController@new_courses')->name('course.add');
-    });
-
-    Route::group(['prefix' => 'professor/my'], function () {
-        Route::get('courses', 'UsersController@my_courses')->
-            name('my_courses');
-        Route::post('add', 'UsersController@add_course')->
-            name('add_course');
-        Route::post('remove/{id}', 'UsersController@remove_course')->
-            name('remove_course');
     });
 });

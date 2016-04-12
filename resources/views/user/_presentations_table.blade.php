@@ -53,7 +53,9 @@
         </div>
 
         <div class="col-lg-1 col-md-1 col-sm-1 text-center">
-            @include('user._delete_presentation', ['id' => $p['id']])
+            @include('basePages._delete_item', 
+            ['route_name' => 'presentation.destroy',
+                id' => $p['id'], 'title' => 'Delete Presentation'])
         </div>
 
     </div>

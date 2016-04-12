@@ -35,17 +35,14 @@ class PresentationsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){
-
-        /*
-        This fetches the courses with presentations and iterate through them
-        on the html page. It's used to divide the presentations by course.
-        */
-        $courses = Course::where('offered_this_semester',true)->
-            has('presentations')->paginate(5);
+    public function index($status = "Approved"){
+        $status = strtoupper($status[0]);
+        $presentations = Presentation::where(
+            'conference_id', '=', get_current_conference_id())->
+            where('status', '=', $status)->orderBy('course_id')->get();
 
         return view('presentations.index',
-            compact('courses'));
+            compact('presentations', 'status'));
     }
 
     /**
@@ -69,6 +66,10 @@ class PresentationsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(PresentationRequest $request){
+        if(!current_conference()){
+            flash()->error("You can't create a presentation yet!");
+            return redirect(route('user.show'));
+        }
         $fields = $request->all();
         $students = $fields['student_name'];
         if(empty($students[0])){
@@ -80,6 +81,7 @@ class PresentationsController extends Controller
 
         $presentation = new Presentation($fields);
         $presentation->owner = $user->id;
+        $presentation->conference_id = get_current_conference_id();
         if($user->is_admin()){
             $presentation->status = "A";
         }else {
@@ -94,7 +96,7 @@ class PresentationsController extends Controller
             flash()->error("Presentation couldn't be saved");
         }
 
-        return redirect()->route('user.show', $user);
+        return redirect()->route('user.show');
     }
 
 
@@ -145,7 +147,7 @@ class PresentationsController extends Controller
             flash()->overlay("Don't forget to resubmit this update"
                  ." to SAC coordinator", "Success!");
         }
-        return redirect()->route('user.show', $user);
+        return redirect()->route('user.show');
     }
 
     /**
@@ -164,7 +166,7 @@ class PresentationsController extends Controller
 
         flash()->success("Presentation submitted with success!");
 
-        return redirect()->route('user.show', Auth::user());
+        return redirect()->route('user.show');
     }
 
 
@@ -181,7 +183,7 @@ class PresentationsController extends Controller
         $presentation->delete();
         flash()->success("Presentation deleted!");
 
-        return redirect()->route('user.show', Auth::user());
+        return redirect()->route('user.show');
     }
 
     public function approve($id){
@@ -190,12 +192,11 @@ class PresentationsController extends Controller
         $presentation->save();
         flash()->success("This presentations has been approved");
 
-      return redirect()->route('presentation.pending');
+      return redirect()->route('presentation.status', 'pending');
     }
 
     public function decline($id){
-        $presentation = Presentation::findOrFail($id);
-        return view('presentations.comments')->with('presentation', $presentation);
+        return view('presentations.comments')->with('id', $id);
     }
 
     public function save_comment($id, Request $request){
@@ -205,12 +206,7 @@ class PresentationsController extends Controller
         $presentation->comments = $comments['comments'];
         $presentation->save();
         flash()->success('Your comments have being saved');
-        return redirect()->route('presentation.pending');
-    }
-
-    public function pending(){
-        $presentations = Presentation::where('status', 'P')->get();
-        return view('presentations.pending')->with('presentations', $presentations);
+        return redirect()->route('presentation.status', 'pending');
     }
 
     private function save_students($students, $id){
@@ -244,7 +240,8 @@ class PresentationsController extends Controller
     }
 
     public function show_schedule($display_room = null){
-      $presentations = Presentation::where('status', 'A')->get();
+      $presentations = Presentation::where('status', 'A')->
+        where('conference_id', '=', get_current_conference_id())->get();
       $conference = Conference::orderBy('id','desc')->first();
       $timeslots = Timeslot::where('conference_id', $conference->id)->
                       where('room_code', $display_room)->
