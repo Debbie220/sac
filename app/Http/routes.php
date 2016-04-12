@@ -12,7 +12,7 @@ Route::group(['middleware' => 'web'], function () {
             name('presentation.submit');
         Route::patch('{id}/approve', 'PresentationsController@approve')->
             name('presentation.approve');
-        Route::patch('{id}/decline', 'PresentationsController@decline')->
+        Route::get('{id}/decline', 'PresentationsController@decline')->
             name('presentation.decline');
         Route::post('{id}/decline', 'PresentationsController@save_comment')->
             name('presentation.comment');

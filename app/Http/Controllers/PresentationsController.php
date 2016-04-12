@@ -41,14 +41,20 @@ class PresentationsController extends Controller
         This fetches the courses with presentations and iterate through them
         on the html page. It's used to divide the presentations by course.
         */
-        $courses = Course::where('offered_this_semester',true)->
-            whereHas('presentations', function ($query) use ($status) {
-                $query->where('conference_id', '=', get_current_conference_id())->
-                    where('status', '=', strtoupper($status[0]));
-            })->paginate(5);
+        /** HTML IS NOT WORKIN BECAUSE I PASS THE COURSE AND THE ITERATE THERE,7
+        MAKING THIS QUERY ALMOST INVALID!!!!!!*/
+        // $courses = Course::where('offered_this_semester',true)->
+        //     whereHas('presentations', function ($query) use ($status) {
+        //         $query->where('conference_id', '=', get_current_conference_id())->
+        //             where('status', '=', strtoupper($status[0]));
+        //     })->paginate(5);
+        $status = strtoupper($status[0]);
+        $presentations = Presentation::where(
+            'conference_id', '=', get_current_conference_id())->
+            where('status', '=', $status)->orderBy('course_id')->get();
 
         return view('presentations.index',
-            compact('courses'));
+            compact('presentations', 'status'));
     }
 
     /**
@@ -198,12 +204,11 @@ class PresentationsController extends Controller
         $presentation->save();
         flash()->success("This presentations has been approved");
 
-      return redirect()->route('presentation.pending');
+      return redirect()->route('presentation.status', 'pending');
     }
 
     public function decline($id){
-        $presentation = Presentation::findOrFail($id);
-        return view('presentations.comments')->with('presentation', $presentation);
+        return view('presentations.comments')->with('id', $id);
     }
 
     public function save_comment($id, Request $request){
@@ -213,12 +218,7 @@ class PresentationsController extends Controller
         $presentation->comments = $comments['comments'];
         $presentation->save();
         flash()->success('Your comments have being saved');
-        return redirect()->route('presentation.pending');
-    }
-
-    public function pending(){
-        $presentations = Presentation::where('status', 'P')->get();
-        return view('presentations.pending')->with('presentations', $presentations);
+        return redirect()->route('presentation.status', 'pending');
     }
 
     private function save_students($students, $id){
