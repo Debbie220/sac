@@ -20,6 +20,7 @@ Presentations
     </li>
 </ul>
 
+<br>
     @forelse($presentations as $index=>$p)
         <div class="row ">
             <div class="col-lg-5 col-md-5 col-sm-5 info">

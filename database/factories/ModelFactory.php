@@ -15,7 +15,6 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->email,
-        'password' => bcrypt('123456'),
     ];
 });
 
@@ -49,6 +48,7 @@ $factory->defineAs(App\Presentation::class, 'student_presentation',
         'special_notes' => $faker->text,
         'status' => $status[array_rand($status)],
         'our_nominee' => $our_nominee[array_rand($our_nominee)],
+        'conference_id' => get_current_conference_id()
     ];
 
     return $presentation;
