@@ -16,5 +16,5 @@
 </ul>
 
 <ul class="nav nav-pills nav-stacked"> Previous conferences
-    <li><a href="#">See previous Conferences</a></li>
+    <li><a href="{{ route('conference.old') }}">See previous Conferences</a></li>
 </ul>

@@ -27,6 +27,11 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('/{status}', 'PresentationsController@index')->name('presentation.status');
     });
 
+    Route::group(['prefix' => 'conference'], function (){
+        Route::get('/old', 'ConferencesController@old')->
+            name('conference.old');
+    });
+
     Route::get('user/my', 'UsersController@show')->name('user.show');
     Route::group(['prefix' => 'professor/my'], function () {
         Route::get('courses', 'UsersController@my_courses')->
