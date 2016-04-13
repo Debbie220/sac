@@ -243,6 +243,7 @@ class PresentationsController extends Controller
       if (Input::has('timeslots')){
         $formvalues = Input::all();
         $timeslots = $formvalues['timeslots'];
+        //Here we assign presentations to timeslots
         foreach ($timeslots as $timeslot){
           if (Input::has($timeslot)){
             foreach ($formvalues[$timeslot] as $identifier){
@@ -251,9 +252,11 @@ class PresentationsController extends Controller
               $presentation->save();
             }
           }
+          //Here we 'unassign' presentations that were dropped back in the
+          //unnasigned box
           if (Input::has('drag-elements')){
             foreach ($formvalues['drag-elements'] as $identifier){
-              $presentation = Presentation::findOrFail(substr($identifier,-1));
+              $presentation = Presentation::findOrFail(explode('_', $identifier)[1]);
               $presentation->timeslot = null;
               $presentation->save();
               }
