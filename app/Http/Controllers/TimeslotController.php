@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 use App\Http\Requests;
 use App\Timeslot;
@@ -66,7 +67,45 @@ class TimeslotController extends Controller
       'rooms','display_room', 'timeslots', 'days', 'hours', 'minutes'));
     }
 
-    
+    public function update_schedule($display_room = null){
+      if (Input::has('timeslots')){
+        $formvalues = Input::all();
+        $timeslots = $formvalues['timeslots'];
+        //Here we assign presentations to timeslots
+        foreach ($timeslots as $timeslot){
+          if (Input::has($timeslot)){
+            foreach ($formvalues[$timeslot] as $identifier){
+              $presentation = Presentation::findOrFail(explode('_', $identifier)[1]);
+              $presentation->timeslot = $timeslot;
+              $presentation->save();
+            }
+          }
+          //Here we 'unassign' presentations that were dropped back in the
+          //unnasigned box
+          if (Input::has('drag-elements')){
+            foreach ($formvalues['drag-elements'] as $identifier){
+              $presentation = Presentation::findOrFail(explode('_', $identifier)[1]);
+              $presentation->timeslot = null;
+              $presentation->save();
+              }
+            }
+        }
+      }
+    return redirect()->route('timeslot.show', compact('display_room'));
+    }
+
+    public function addTime($display_room){
+      $formvalues = Input::all();
+      $timeslot= new Timeslot;
+      $timeslot->day = $formvalues['day'];
+      $timeslot->room_code = $display_room;
+      $conference = Conference::orderBy('id','desc')->first();
+      $timeslot->conference_id = $conference->id;
+      $time = strtotime($formvalues['minute']) + strtotime($formvalues['hour']);
+      $timeslot->time = date('H:i', $time);
+      $timeslot->save();
+      return redirect()->route('timeslot.show', compact('display_room'));
+    }
 
     public function deleteTime($display_room, $id){
       Timeslot::destroy($id);

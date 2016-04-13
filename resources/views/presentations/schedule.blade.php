@@ -8,7 +8,7 @@
 
 @section('admin_content')
 @include('presentations._show_rooms')
-<form method="POST" action="{{ route('presentation.book',
+<form method="POST" action="{{ route('timeslot.assign',
                           ['display_room' => $display_room]) }}">
 {{ csrf_field() }}
   <div class="col-md-4 container"
@@ -31,7 +31,7 @@
     </div>
 </form>
 @if ($display_room != null)
-  <form method="POST" action="{{ route('add_time',
+  <form method="POST" action="{{ route('timeslot.create',
                             ['display_room' => $display_room]) }}">
   {{ csrf_field() }}
     <div class="row">

@@ -16,10 +16,6 @@ Route::group(['middleware' => 'web'], function () {
             name('presentation.decline');
         Route::post('{id}/decline', 'PresentationsController@save_comment')->
             name('presentation.comment');
-        Route::post('updateSchedule/{display_room?}', 'PresentationsController@update_schedule')->
-            name('presentation.book');
-        Route::post('addTime/{display_room}', 'PresentationsController@addTime')->
-            name('add_time');
         Route::get('/{status}', 'PresentationsController@index')->name('presentation.status');
     });
 
@@ -28,6 +24,10 @@ Route::group(['middleware' => 'web'], function () {
             name('delete_time');
         Route::get('schedule/{display_room?}', 'TimeslotController@show_schedule')->
             name('timeslot.show');
+        Route::post('updateSchedule/{display_room?}', 'TimeslotController@update_schedule')->
+            name('timeslot.assign');
+        Route::post('addTime/{display_room}', 'TimeslotController@addTime')->
+            name('timeslot.create');
     });
 
 
