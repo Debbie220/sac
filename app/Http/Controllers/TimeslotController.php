@@ -63,7 +63,7 @@ class TimeslotController extends Controller
         $i = $i + 1;
       }
 
-      return view('presentations.schedule', compact('presentations',
+      return view('timeslots.schedule', compact('presentations',
       'rooms','display_room', 'timeslots', 'days', 'hours', 'minutes'));
     }
 

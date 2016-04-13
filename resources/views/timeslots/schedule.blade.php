@@ -7,13 +7,13 @@
 @stop
 
 @section('admin_content')
-@include('presentations._show_rooms')
+@include('timeslots._show_rooms')
 <form method="POST" action="{{ route('timeslot.assign',
                           ['display_room' => $display_room]) }}">
 {{ csrf_field() }}
   <div class="col-md-4 container"
     id="drag-elements">
-    @include('presentations._unscheduled')
+    @include('timeslots._unscheduled')
   </div>
   <div class="col-md-1">
   </div>
@@ -26,7 +26,7 @@
         </button>
       </div>
 
-      @include('presentations._show_timeslots')
+      @include('timeslots._show_timeslots')
     @endif
     </div>
 </form>
@@ -37,7 +37,7 @@
     <div class="row">
       <div class="col-md-6"></div>
       <div class="col-md-6">
-        @include('presentations._add_timeslot')
+        @include('timeslots._add_timeslot')
       </div>
     </div>
   </form>
