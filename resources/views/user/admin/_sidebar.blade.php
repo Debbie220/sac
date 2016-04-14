@@ -1,6 +1,7 @@
 @if(current_conference())
 <ul class="nav nav-pills nav-stacked"> Current Conference
     <li><a href="{{ route('timeslot.show')}}">Schedule</a></li>
+    <li><a href="{{ route('room.index') }}">Rooms</a></li>
     <li><a href="{{ route('presentation.index') }}">Presentations</a></li>
 </ul>
 
@@ -14,6 +15,5 @@
 </ul>
 
 <ul class="nav nav-pills nav-stacked"> New Conference
-    <li><a href="{{ route('room.index') }}">Rooms</a></li>
     <li><a href="{{ route('conference.create') }}">Create new Conference</a></li>
 </ul>
