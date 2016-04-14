@@ -20,14 +20,19 @@ Route::group(['middleware' => 'web'], function () {
     });
 
     Route::group(['prefix' => 'timeslot'], function (){
-        Route::get('deleteTime/{display_room}/{id}', 'TimeslotController@deleteTime')->
+        Route::get('deleteTime/{display_room}/{id}',
+            'TimeslotController@deleteTime')->
             name('delete_time');
         Route::get('schedule/{display_room?}', 'TimeslotController@show_schedule')->
             name('timeslot.show');
-        Route::post('updateSchedule/{display_room?}', 'TimeslotController@update_schedule')->
+        Route::post('updateSchedule/{display_room?}',
+            'TimeslotController@update_schedule')->
             name('timeslot.assign');
-        Route::post('addTime/{display_room}', 'TimeslotController@addTime')->
+        Route::post('addTime/{display_room}',
+            'TimeslotController@createNewTimeslot')->
             name('timeslot.create');
+        Route::get('addRoom/{room}', 'TimeslotController@addRoom')->
+          name('timeslot.add_room');
     });
 
 

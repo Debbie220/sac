@@ -48,9 +48,13 @@ class RoomsController extends Controller
       $room = Room::findOrFail($id);
       if ($room['available'] == 1){
         $room->available = 0;
+        $room->save();
+        return redirect()->route('timeslot.remove_room', compact('room'));
       }
       else {
         $room->available = 1;
+        $room->save();
+        return redirect()->route('timeslot.add_room', compact('room'));
       }
       $room->save();
       return redirect()->route('room.index');

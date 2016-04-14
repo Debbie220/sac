@@ -93,8 +93,9 @@ class TimeslotController extends Controller
       }
     return redirect()->route('timeslot.show', compact('display_room'));
     }
-
-    public function addTime($display_room){
+    //This method is for the admin to manually add timeslots from the scheduling
+    //page
+    public function createNewTimeslot($display_room){
       $formvalues = Input::all();
       $timeslot= new Timeslot;
       $timeslot->day = $formvalues['day'];
@@ -105,6 +106,26 @@ class TimeslotController extends Controller
       $timeslot->time = date('H:i', $time);
       $timeslot->save();
       return redirect()->route('timeslot.show', compact('display_room'));
+    }
+
+    public function addRoom($room){
+      $conference = Conference::orderBy('id','desc')->first()->id;
+      //Getting all unique times existing in this conference
+      $times = Timeslot::where('conference_id', $conference)->
+          select('time')->distinct()->get();
+      $days = Timeslot::where('conference_id', $conference)->
+          select('day')->distinct()->get();
+      foreach($days as $day){
+        foreach($times as $time){
+          $timeslot = new Timeslot;
+          $timeslot->conference_id = $conference;
+          $timeslot->day = $day->day;
+          $timeslot->time = $time->time;
+          $timeslot->room_code = $room;
+          $timeslot->save();
+        }
+      }
+      return redirect()->route('room.index');
     }
 
     public function deleteTime($display_room, $id){
