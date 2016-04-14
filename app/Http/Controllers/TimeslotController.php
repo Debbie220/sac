@@ -10,7 +10,7 @@ use App\Timeslot;
 use App\Conference;
 use JavaScript;
 use App\Presentation;
-
+use DB;
 
 class TimeslotController extends Controller
 {
@@ -125,6 +125,16 @@ class TimeslotController extends Controller
           $timeslot->save();
         }
       }
+      return redirect()->route('room.index');
+    }
+
+    // Takes in the the room_code (a string) of the room to delete,
+    // and deletes all timeslots having that room_code and having the current
+    // conference.
+    public function removeRoom($room){
+      $conference = Conference::orderBy('id','desc')->first()->id;
+      DB::table('timeslots')->where('room_code', $room)->
+        where('conference_id', $conference)->delete();
       return redirect()->route('room.index');
     }
 

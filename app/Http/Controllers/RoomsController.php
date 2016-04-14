@@ -56,7 +56,5 @@ class RoomsController extends Controller
         $room->save();
         return redirect()->route('timeslot.add_room', compact('room'));
       }
-      $room->save();
-      return redirect()->route('room.index');
     }
 }
