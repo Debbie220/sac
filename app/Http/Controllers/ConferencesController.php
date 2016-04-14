@@ -33,8 +33,7 @@ class ConferencesController extends Controller
     }
 
     public function create(){
-        $rooms = Room::all()->toArray();
-        if(empty($rooms)){
+        if(Room::count() == 0){
             flash()->error("You must add at least one room before creating
                         a conference");
           }
@@ -54,8 +53,7 @@ class ConferencesController extends Controller
     }
 
     public function store(Request $request){
-        $rooms = Room::all()->toArray();
-        if(empty($rooms)){
+        if(Room::count() == 0){
           flash()->error("You must add at least one room before creating
                       a conference");
           return back()->withInput();
