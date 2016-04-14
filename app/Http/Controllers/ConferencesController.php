@@ -33,6 +33,11 @@ class ConferencesController extends Controller
     }
 
     public function create(){
+        $rooms = Room::all()->toArray();
+        if(empty($rooms)){
+            flash()->error("You must add at least one room before creating
+                        a conference");
+          }
         $times = [];
         $tNow = strtotime("10:00");
         $tEnd = strtotime("22:00");
@@ -44,10 +49,17 @@ class ConferencesController extends Controller
 
         $days =[1,2,3,4,5];
         $numDays=1;
-        return view('conferences.new', compact('days', 'times', 'numDays'));
+        return view('conferences.new', compact('days', 'times',
+              'rooms', 'numDays'));
     }
 
     public function store(Request $request){
+        $rooms = Room::all()->toArray();
+        if(empty($rooms)){
+          flash()->error("You must add at least one room before creating
+                      a conference");
+          return back()->withInput();
+        }
         $this->validate($request, [
             'name' => 'required|min:5|max:255',
         ]);
