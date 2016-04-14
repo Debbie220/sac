@@ -28,19 +28,23 @@ class RoomsController extends Controller
     public function store(Request $request){
 
         try {
-            Room::create($request->all());
+            $room = Room::create($request->all());
             flash()->success('Room created!');
+            $code = $room->code;
+            return redirect()->route('timeslot.add_room', compact('room'));
         } catch(\Illuminate\Database\QueryException $e){
             flash()->error('Room already exists!');
+            return redirect(route('room.index'));
         }
-        return redirect(route('room.index'));
+
+
     }
 
     public function destroy($code)
     {
         Room::destroy($code);
         flash()->success("Room deleted!");
-        return redirect(route('room.index'));
+        return redirect()->route('timeslot.remove_room', compact('code'));
     }
 
     public function changeAvailability($id)
