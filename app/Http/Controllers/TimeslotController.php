@@ -10,7 +10,7 @@ use App\Timeslot;
 use App\Conference;
 use JavaScript;
 use App\Presentation;
-
+use DB;
 
 class TimeslotController extends Controller
 {
@@ -21,6 +21,9 @@ class TimeslotController extends Controller
     public function show_schedule($display_room = null){
       $presentations = Presentation::where('status', 'A')->
         where('conference_id', '=', get_current_conference_id())->get();
+      $unscheduled = Presentation::where('status', 'A')->
+        where('conference_id', '=', get_current_conference_id())->
+        where('timeslot', NULL)->get();
       $conference = Conference::orderBy('id','desc')->first();
       $timeslots = Timeslot::where('conference_id', $conference->id)->
                       where('room_code', $display_room)->
@@ -63,7 +66,7 @@ class TimeslotController extends Controller
         $i = $i + 1;
       }
 
-      return view('timeslots.schedule', compact('presentations',
+      return view('timeslots.schedule', compact('presentations', 'unscheduled',
       'rooms','display_room', 'timeslots', 'days', 'hours', 'minutes'));
     }
 
@@ -93,8 +96,9 @@ class TimeslotController extends Controller
       }
     return redirect()->route('timeslot.show', compact('display_room'));
     }
-
-    public function addTime($display_room){
+    //This method is for the admin to manually add timeslots from the scheduling
+    //page
+    public function createNewTimeslot($display_room){
       $formvalues = Input::all();
       $timeslot= new Timeslot;
       $timeslot->day = $formvalues['day'];
@@ -105,6 +109,36 @@ class TimeslotController extends Controller
       $timeslot->time = date('H:i', $time);
       $timeslot->save();
       return redirect()->route('timeslot.show', compact('display_room'));
+    }
+
+    public function addRoom($room){
+      $conference = Conference::orderBy('id','desc')->first()->id;
+      //Getting all unique times existing in this conference
+      $times = Timeslot::where('conference_id', $conference)->
+          select('time')->distinct()->get();
+      $days = Timeslot::where('conference_id', $conference)->
+          select('day')->distinct()->get();
+      foreach($days as $day){
+        foreach($times as $time){
+          $timeslot = new Timeslot;
+          $timeslot->conference_id = $conference;
+          $timeslot->day = $day->day;
+          $timeslot->time = $time->time;
+          $timeslot->room_code = $room;
+          $timeslot->save();
+        }
+      }
+      return redirect()->route('room.index');
+    }
+
+    // Takes in the the room_code (a string) of the room to delete,
+    // and deletes all timeslots having that room_code and having the current
+    // conference.
+    public function removeRoom($room){
+      $conference = Conference::orderBy('id','desc')->first()->id;
+      DB::table('timeslots')->where('room_code', $room)->
+        where('conference_id', $conference)->delete();
+      return redirect()->route('room.index');
     }
 
     public function deleteTime($display_room, $id){
