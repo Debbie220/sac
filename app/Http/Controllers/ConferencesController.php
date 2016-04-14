@@ -64,7 +64,7 @@ class ConferencesController extends Controller
 
         $numDays = sizeOf($first);
         //start day loop from here
-        if($numDays =1 ){
+        if($numDays == 1){
             $times=[];
             $tStart = strtotime($first[0]);
             $tEnd = strtotime($last[0]);
@@ -89,8 +89,8 @@ class ConferencesController extends Controller
             }
         }
         else{
-          for($day=1, $index=0; 
-            $day<$numDays || $index<($numDays - 1); 
+          for($day=1, $index=0;
+            $day<$numDays || $index<($numDays - 1);
             $day++, $index++){
                 $times=[];
                 $tStart = strtotime($first[$index]);
