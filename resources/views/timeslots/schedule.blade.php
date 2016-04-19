@@ -24,7 +24,7 @@
          class="btn btn-primary">
             <i class="fa fa-floppy-o"></i> Save
         </button>
-        <a class="btn btn-default"> 
+        <a class="btn btn-default" href="{{route('timeslot.preview')}}"> 
           <i class="fa fa-calendar-o" aria-hidden="true"></i>
           Preview </a>
         <a class="btn btn-default"> 

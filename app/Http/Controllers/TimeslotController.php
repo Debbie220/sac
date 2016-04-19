@@ -146,4 +146,10 @@ class TimeslotController extends Controller
       return redirect()->route('timeslot.show', compact('display_room'));
     }
 
+    public function preview(){
+      $timeslots = Timeslot::where(
+          'conference_id', '=', get_current_conference_id())->get();
+      return view('timeslots.preview', compact('timeslots'));
+    }
+
 }
