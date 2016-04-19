@@ -11,8 +11,15 @@
 		</h3>
 
 		<div class="collapse" id="{{$index}}">
-			@include('user._presentations_table',
-				['presentations' => $course->presentations])
+	    	<div class="col-md-offset-1">
+		        @forelse($course->presentations as $p)
+		       		@if($p->conference_id == get_current_conference_id())
+		            	@include('user._presentations_table')
+		            @endif
+		        @empty
+		            <h4>No presentations here!</h4>
+		        @endforelse
+		    </div>
 		</div>
 	@empty
 		Start by adding courses to your account.

@@ -1,5 +1,4 @@
-<div class="col-md-offset-1">
-    @forelse($presentations as $p)
+
     <div class="row ">
         <div class="col-lg-6 col-md-6 col-sm-6 ">
             <h4>
@@ -60,7 +59,4 @@
 
     </div>
     <br>
-    @empty
-        <h4>No presentations here!</h4>
-    @endforelse
-</div>
+
