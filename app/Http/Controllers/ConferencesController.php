@@ -33,6 +33,10 @@ class ConferencesController extends Controller
     }
 
     public function create(){
+        if(Room::count() == 0){
+            flash()->error("You must add at least one room before creating
+                        a conference");
+          }
         $times = [];
         $tNow = strtotime("10:00");
         $tEnd = strtotime("22:00");
@@ -44,10 +48,16 @@ class ConferencesController extends Controller
 
         $days =[1,2,3,4,5];
         $numDays=1;
-        return view('conferences.new', compact('days', 'times', 'numDays'));
+        return view('conferences.new', compact('days', 'times',
+              'rooms', 'numDays'));
     }
 
     public function store(Request $request){
+        if(Room::count() == 0){
+          flash()->error("You must add at least one room before creating
+                      a conference");
+          return back()->withInput();
+        }
         $this->validate($request, [
             'name' => 'required|min:5|max:255',
         ]);
@@ -64,7 +74,7 @@ class ConferencesController extends Controller
 
         $numDays = sizeOf($first);
         //start day loop from here
-        if($numDays =1 ){
+        if($numDays == 1){
             $times=[];
             $tStart = strtotime($first[0]);
             $tEnd = strtotime($last[0]);
@@ -89,8 +99,8 @@ class ConferencesController extends Controller
             }
         }
         else{
-          for($day=1, $index=0; 
-            $day<$numDays || $index<($numDays - 1); 
+          for($day=1, $index=0;
+            $day<$numDays || $index<($numDays - 1);
             $day++, $index++){
                 $times=[];
                 $tStart = strtotime($first[$index]);
