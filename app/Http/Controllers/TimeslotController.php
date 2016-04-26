@@ -10,6 +10,7 @@ use App\Timeslot;
 use App\Conference;
 use JavaScript;
 use App\Presentation;
+use App\Room;
 use DB;
 
 class TimeslotController extends Controller
@@ -147,9 +148,12 @@ class TimeslotController extends Controller
     }
 
     public function preview(){
+      $rooms= Room::where("available", true)->get();
+      $presentations = Presentation::where(
+          'conference_id', '=', get_current_conference_id())->get();
       $timeslots = Timeslot::where(
           'conference_id', '=', get_current_conference_id())->get();
-      return view('timeslots.preview', compact('timeslots'));
+      return view('timeslots.preview', compact('timeslots', 'rooms', 'presentations'));
     }
 
 }
