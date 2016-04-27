@@ -1,4 +1,4 @@
-<?php 
+<?php
     use App\Conference;
     use App\Presentation;
 
@@ -15,5 +15,11 @@
 
     function get_current_conference_id(){
         return Conference::max('id');
+    }
+
+    function current_conference_published(){
+      $id = get_current_conference_id();
+      $current_conference = Conference::find($id);
+      return $current_conference->published;
     }
 ?>
