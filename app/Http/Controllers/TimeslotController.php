@@ -157,4 +157,12 @@ class TimeslotController extends Controller
       return view('timeslots.preview', compact('timeslots', 'rooms', 'presentations', 'days'));
     }
 
+    public function publish(){
+      $current_conference = current_conference();
+      $current_conference->published = true;
+      $current_conference->save();
+      flash()->success('The schedule is now published.');
+      return redirect()->route('timeslot.preview');
+    }
+
 }

@@ -37,6 +37,8 @@ Route::group(['middleware' => 'web'], function () {
             name('timeslot.remove_room');
         Route::get('preview', 'TimeslotController@preview')->
             name('timeslot.preview');
+        Route::get('publish', 'TimeslotController@publish')->
+            name('timeslot.publish');
     });
 
 
