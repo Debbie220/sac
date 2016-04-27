@@ -149,11 +149,12 @@ class TimeslotController extends Controller
 
     public function preview(){
       $rooms= Room::where("available", true)->get();
+      $days = Timeslot::orderBy("id", 'desc')->first()->day;
       $presentations = Presentation::where(
-          'conference_id', '=', get_current_conference_id())->get();
+          'conference_id', '=', get_current_conference_id())->whereNotNull('timeslot')->get();
       $timeslots = Timeslot::where(
           'conference_id', '=', get_current_conference_id())->get();
-      return view('timeslots.preview', compact('timeslots', 'rooms', 'presentations'));
+      return view('timeslots.preview', compact('timeslots', 'rooms', 'presentations', 'days'));
     }
 
 }
