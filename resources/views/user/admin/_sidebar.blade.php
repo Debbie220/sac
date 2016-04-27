@@ -2,6 +2,7 @@
 <ul class="nav nav-pills nav-stacked"> Current Conference
     <li><a href="{{ route('timeslot.show')}}">Schedule</a></li>
     <li><a href="{{ route('presentation.index') }}">Presentations</a></li>
+    <li><a href="{{ route('timeslot.preview') }}">Preview Schedule</a></li>
 </ul>
 
 <ul class="nav nav-pills nav-stacked"> Previous conferences
