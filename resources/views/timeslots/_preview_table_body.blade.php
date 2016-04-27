@@ -19,7 +19,8 @@
         </td>
         <td class="text-center">
             <p>
-                {{ $p->course()->get()->first()->subject_code}}
+                {{ $p->course()->get()->first()->subject_code . " " .
+                 $p->course()->get()->first()->number}}
             </p>
         </td>
         <td class="text-center">
@@ -33,13 +34,15 @@
             </p>
         </td>
     </tr>
-      <td colspan="6" style="border-top-width:0;">
+    <tr class="row">
+      <td colspan="7" style="border-top-width:0;">
         <a data-toggle="collapse"
-          data-target="#{{$p['id']}}"> <h4> View Abstract </h4> </a>
+        data-target="#{{$p['id']}}"> <h4> View Abstract </h4> </a>
         <div id = "{{$p['id']}}" class= "collapse">
           {{$p['abstract']}}
         </div>
       </td>
+    </tr>
     @endif
   @endif
 @endforeach
