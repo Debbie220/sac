@@ -15,6 +15,15 @@
     </span>
   </a>
 </p>
+  @if(current_conference_published())
+  <p class="navbar-text">
+    <a href = "{{route('timeslot.preview')}}">
+      <span class= "uofatext">
+        View SAC schedule
+      </span>
+    </a>
+  </p>
+  @endif
 @endif
 
 <!-- Workaround to make the button appear with padding right -->

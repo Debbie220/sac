@@ -51,4 +51,8 @@ class Presentation extends Model
     public function is_group(){
         return count($this->students()) > 1;
     }
+
+    public function timeslot(){
+      return $this->belongsTo("App\Timeslot", "timeslot");
+    }
 }

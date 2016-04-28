@@ -19,11 +19,17 @@
   </div>
   <div class="col-md-5">
     @if($display_room != null)
-      <div class="row">
-        <button type="submit" style="display: block; width: 100%; margin: 15px;"
+      <div class="btn-group text-center" role="group" aria-label="...">
+        <button type="submit"
          class="btn btn-primary">
             <i class="fa fa-floppy-o"></i> Save
         </button>
+        <a class="btn btn-default" href="{{route('timeslot.preview')}}">
+          <i class="fa fa-calendar-o" aria-hidden="true"></i>
+          Preview </a>
+        <a class="btn btn-default" href="{{route('timeslot.publish')}}"> 
+          <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+          Publish </a>
       </div>
 
       @include('timeslots._show_timeslots')

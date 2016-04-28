@@ -10,6 +10,7 @@ use App\Timeslot;
 use App\Conference;
 use JavaScript;
 use App\Presentation;
+use App\Room;
 use DB;
 
 class TimeslotController extends Controller
@@ -144,6 +145,24 @@ class TimeslotController extends Controller
     public function deleteTime($display_room, $id){
       Timeslot::destroy($id);
       return redirect()->route('timeslot.show', compact('display_room'));
+    }
+
+    public function preview(){
+      $rooms= Room::where("available", true)->get();
+      $days = Timeslot::orderBy("id", 'desc')->first()->day;
+      $presentations = Presentation::where(
+          'conference_id', '=', get_current_conference_id())->whereNotNull('timeslot')->get();
+      $timeslots = Timeslot::where(
+          'conference_id', '=', get_current_conference_id())->get();
+      return view('timeslots.preview', compact('timeslots', 'rooms', 'presentations', 'days'));
+    }
+
+    public function publish(){
+      $current_conference = current_conference();
+      $current_conference->published = true;
+      $current_conference->save();
+      flash()->success('The schedule is now published.');
+      return redirect()->route('timeslot.preview');
     }
 
 }

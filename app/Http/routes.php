@@ -32,9 +32,13 @@ Route::group(['middleware' => 'web'], function () {
             'TimeslotController@createNewTimeslot')->
             name('timeslot.create');
         Route::get('addRoom/{room}', 'TimeslotController@addRoom')->
-          name('timeslot.add_room');
+            name('timeslot.add_room');
         Route::get('removeRoom/{room}', 'TimeslotController@removeRoom')->
-          name('timeslot.remove_room');
+            name('timeslot.remove_room');
+        Route::get('preview', 'TimeslotController@preview')->
+            name('timeslot.preview');
+        Route::get('publish', 'TimeslotController@publish')->
+            name('timeslot.publish');
     });
 
 
